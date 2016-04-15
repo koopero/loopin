@@ -1,19 +1,34 @@
 {
   "name": "loopin",
-  "version": "0.0.0",
+  "version": "0.3.0",
   "description": "Loopin",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Samm Cooper <koopero@gmail.com>",
+  "license": "MIT",
   "dependencies": {
     "bluebird-extra": "^1.0.1",
+    "boptions": "^0.2.1",
     "byline": "^4.2.1",
     "chalk": "^1.1.3",
     "glob": "^7.0.3",
     "js-yaml": "^3.5.5",
-    "lodash": "^4.11.1"
-  }
+    "lodash": "^4.11.1",
+    "loopin-builder": "^0.3.0"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/koopero/loopin.git"
+  },
+  "keywords": [
+    "openframeworks",
+    "rendering"
+  ],
+  "bugs": {
+    "url": "https://github.com/koopero/loopin/issues"
+  },
+  "homepage": "https://github.com/koopero/loopin#readme"
 }

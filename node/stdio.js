@@ -18,7 +18,6 @@ function Stdio( proc ) {
 
   var capturePath
 
-
   EventEmitter.call( stdio )
 
   loopin.patch = patch
