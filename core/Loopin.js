@@ -11,20 +11,8 @@ function Loopin() {
     , listeners = Object.create( null )
 
   loopin.dispatch = dispatch
-  loopin.read = read
   loopin.listen = listen
   loopin.pluginAdd = pluginAdd
-
-
-
-  function read( path ) {
-    path = path || ''
-    patch( path, 'read' )
-    return listen( 'read::'+path )
-      .then( function ( event ) {
-        return event.data
-      } )
-  }
 
 
   function listen( path, callback ) {

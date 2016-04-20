@@ -16,19 +16,18 @@ function Stdio( proc ) {
   const stdio = Object.create( Stdio.prototype )
       , captureData = {}
 
-  var capturePath
+  var captureKey
 
   EventEmitter.call( stdio )
 
   loopin.patch = patch
-  function patch( value ) {
+  function patch( value, path ) {
     value = util.wrapObjectInPath( value, path )
 
     const json = JSON.stringify( value )
+    console.log( 'patch', value )
     proc.stdin.write( json+'\n' )
   }
-
-  const dispatch = stdio.emit.bind( stdio, 'event' )
 
   const warn = function ( line ) {
     console.warn( line )
@@ -79,6 +78,8 @@ function Stdio( proc ) {
     if ( captureKey ) {
       captureData[captureKey] = captureData[captureKey] || ''
       captureData[captureKey] += line
+    } else {
+      warn( line )
     }
 
     //TODO: Uncaptured stdio noise
