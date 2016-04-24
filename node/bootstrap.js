@@ -27,6 +27,7 @@ function bootstrap() {
       loopin.pluginAdd( require('../plugin/common/read') )
       loopin.pluginAdd( require('../plugin/common/show') )
       loopin.pluginAdd( require('../plugin/common/preset') )
+      loopin.pluginAdd( require('../plugin/node/files') )
       loopin.pluginAdd( require('../plugin/node/presetDir') )
       loopin.pluginAdd( require('../plugin/node/save') )
 

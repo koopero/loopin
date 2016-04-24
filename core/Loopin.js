@@ -43,12 +43,9 @@ function Loopin() {
       plugin = plugin.apply( this, _.slice( arguments, 1 ) ) || plugin
     }
 
-    if ( plugin && plugin.loopin  ) {
-      _.extend( loopin, plugin.loopin )
-      plugin.loopin = loopin
-    }
-
     plugins.push( plugin )
+
+    return plugin
   }
 
   //

@@ -9,6 +9,7 @@
   "author": "Samm Cooper <koopero@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "bluebird": "^3.3.5",
     "bluebird-extra": "^1.0.1",
     "boptions": "^0.2.1",
     "byline": "^4.2.1",

@@ -31,13 +31,13 @@ function log() {
       , path = event.path
       , data = event.data
       , width = 100
+      , typeWidth = 16
 
-    width -= column( type, 'type', 16 )
+
+    width -= column( type, 'type', typeWidth )
     width -= column( path+' ', 'path' )
 
-    if ( !_.isObject( data ) ) {
-      width -= column( data, 'value' )
-    } else {
+    if ( _.isObject( data ) ) {
       var pairsLength = 0
         , pairs = _.map( data, function ( val, key ) {
             val = toStr( val )
@@ -47,6 +47,10 @@ function log() {
 
       if ( pairsLength < width ) {
         column( pairs.join( style('delim', ', ' ) ) )
+      } else {
+        write("\n")
+        write(_.repeat( ' ', typeWidth ) )
+        write( pairs.join( "\n" + _.repeat( ' ', typeWidth ) ) )
       }
     }
 

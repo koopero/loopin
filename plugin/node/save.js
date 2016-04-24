@@ -11,6 +11,9 @@ const options = require('boptions')({
 
 })
 
+const Promise = require('bluebird')
+
+
 function save() {
   const loopin = this
 
@@ -25,7 +28,23 @@ function save() {
       dest = key +'.png'
     }
 
-    const patch = { dest: dest }
-    loopin.patch( patch, 'save/'+key )
+    const path = 'save/'+key
+        , patch = { dest: dest }
+
+    return Promise.fromCallback( function ( cb ) {
+      loopin.patch( patch, path )
+      loopin.listen( path, function ( e ) {
+        if ( e.type == 'save' ) {
+          // sucess
+          cb( null, e )
+        } else if ( e.type == 'error' ) {
+          cb( e.data )
+        } else {
+          // Not and event we care about.
+          // Returning true listens for the next one.
+          return true
+        }
+      } )
+    })
   }
 }
