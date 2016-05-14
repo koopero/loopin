@@ -5,11 +5,23 @@ const options = require('boptions')({
   key: {
     '#type': 'string'
   },
+
   dest: {
     '#type': 'string'
   },
 
+  format: {
+    '#type': 'string'
+  },
+
+  quality: {
+    '#type': 'string'
+  },
+
 })
+
+const _ = require('lodash')
+    , pathlib = require('path')
 
 const Promise = require('bluebird')
 
@@ -29,7 +41,17 @@ function save() {
     }
 
     const path = 'save/'+key
-        , patch = { dest: dest }
+        , patch = _.pick( opt, 'dest', 'iterations', 'format', 'quality' )
+
+    patch.dest = dest
+
+    // Openframeworks kind of sucks at writing files with the wrong
+    // file extensions, so give it a little hint.
+    const extname = pathlib.extname( dest )
+    patch['format'] = (
+      extname == '.png' ? 'png' :
+      extname == '.jpg' ? 'jpg' : undefined
+    )
 
     return Promise.fromCallback( function ( cb ) {
       loopin.patch( patch, path )

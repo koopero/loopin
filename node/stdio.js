@@ -25,7 +25,6 @@ function Stdio( proc ) {
     value = util.wrapObjectInPath( value, path )
 
     const json = JSON.stringify( value )
-    console.log( 'patch', value )
     proc.stdin.write( json+'\n' )
   }
 
