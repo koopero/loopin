@@ -16,9 +16,22 @@ function Stdio( proc ) {
   const stdio = Object.create( Stdio.prototype )
       , captureData = {}
 
+  stdio.proc = proc
+
   var captureKey
 
   EventEmitter.call( stdio )
+
+  var _destroy = loopin.destroy
+  loopin.destroy = function () {
+    if ( proc )
+      proc.kill()
+
+    if ( _.isFunction( _destroy ) )
+      return Promise.resolve( _destroy() )
+
+    return Promise.resolve()
+  }
 
   loopin.patch = patch
   function patch( value, path ) {

@@ -7,12 +7,11 @@ function Loopin() {
   const loopin = Object.create( Loopin.prototype )
 
   var connection
-    , plugins = []
     , listeners = Object.create( null )
 
   loopin.dispatch = dispatch
   loopin.listen = listen
-  loopin.pluginAdd = pluginAdd
+  loopin.plugin = plugin
 
 
   function listen( path, callback ) {
@@ -36,14 +35,32 @@ function Loopin() {
   //
   // Plugins
   //
+  var plugins = {}
 
+  function plugin( plugin ) {
+    var key
 
-  function pluginAdd( plugin ) {
+    if ( _.isString( plugin) ) {
+      key = plugin
+      if ( !_.isUndefined( plugins[key] ) )
+        return plugins[key]
+
+      const dir = Loopin.plugins
+      plugin = dir && dir[key]
+
+      if ( !plugin )
+        throw new Error( "plugin '"+key+"' not found" )
+    }
+
+    key = key || plugin.key
+
     if ( _.isFunction( plugin ) ) {
       plugin = plugin.apply( this, _.slice( arguments, 1 ) ) || plugin
     }
 
-    plugins.push( plugin )
+    key = key || plugin.key
+
+    plugins[key] = plugin
 
     return plugin
   }
