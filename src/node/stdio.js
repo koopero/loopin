@@ -34,6 +34,16 @@ function Stdio( proc ) {
   }
 
   loopin.patch = patch
+
+  proc.stdout.setEncoding( 'utf8' )
+  const stdout = byline( proc.stdout )
+  proc.stderr.setEncoding( 'utf8' )
+  const stderr = byline( proc.stderr )
+  stdout.on('data', ( line ) => onLine( line ) )
+  stderr.on('data', ( line ) => onLine( line, true ) )
+
+
+
   function patch( value, path ) {
     value = util.wrapObjectInPath( value, path )
 
@@ -41,30 +51,31 @@ function Stdio( proc ) {
     proc.stdin.write( json+'\n' )
   }
 
-  const warn = function ( line ) {
+  function warn ( line ) {
     console.warn( line )
     if ( line )
       stdio.emit( 'warn', line )
   }
 
-  proc.stdout.setEncoding( 'utf8' )
-  const stdout = byline( proc.stdout )
-  stdout.on( 'data', function ( line ) {
+
+  function onLine( line, isErr ) {
     try {
       var event = JSON.parse( line )
-    } catch ( e ) {
-      capture(line)
-      return
-    }
+    } catch ( e ) {}
 
     if ( !_.isObject( event )
       || !_.isString( event.type )
       || !_.isString( event.path )
     ) {
-      capture(line)
-      return
+      capture(line, isErr )
+    } else {
+      onEvent( event )
     }
 
+
+  }
+
+  function onEvent( event ) {
     switch ( event.type ) {
       case 'captureStart':
         captureKey = event.path
@@ -75,18 +86,17 @@ function Stdio( proc ) {
       break
 
       default:
-        event.capture = captureGet( event.path )
+        event.data = event.data || {}
+        event.data.stderr = captureGet( event.path )
         loopin.dispatch( event )
     }
+  }
 
 
-  })
 
-  proc.stderr.setEncoding( 'utf8' )
-  const stderr = byline( proc.stderr )
-  stderr.on('data', capture )
 
-  function capture( line ) {
+  function capture( line, isErr ) {
+    // console.log('CAPTURE', captureKey, line )
     if ( captureKey ) {
       captureData[captureKey] = captureData[captureKey] || ''
       captureData[captureKey] += line
@@ -98,9 +108,9 @@ function Stdio( proc ) {
   }
 
   function captureGet( path ) {
-    if ( captureData[captureKey] ) {
-      var result = captureData[captureKey]
-      captureData[captureKey] = ''
+    if ( captureData[path] ) {
+      var result = captureData[path]
+      captureData[path] = ''
       return result
     }
   }

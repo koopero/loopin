@@ -40,6 +40,8 @@ function log() {
     if ( _.isObject( data ) ) {
       var pairsLength = 0
         , pairs = _.map( data, function ( val, key ) {
+            if ( _.isUndefined( val ) )
+              return
             val = toStr( val )
             pairsLength += val.length + 4
             return style('key', key ) + style('delim', ': ') + style('value', val )

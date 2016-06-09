@@ -20,8 +20,7 @@ function bootstrap() {
 
   const loopin = this
 
-  console.log( 'bootstrap', opt )
-
+  // console.log( 'bootstrap', opt )
 
   opt.builder.run = true
 
