@@ -1,5 +1,5 @@
-module.exports = log
-log.options = require('boptions')({
+module.exports = loopinLog
+loopinLog.options = require('boptions')({
   'ignore': {
     '#type': 'array',
     '#default': ['frame']
@@ -9,9 +9,11 @@ log.options = require('boptions')({
 const _ = require('lodash')
     , chalk = require('chalk')
 
-function log() {
+const event = require('../core/event')
+
+function loopinLog() {
   const loopin = this
-      , opt = log.options( arguments )
+      , opt = loopinLog.options( arguments )
       , write = process.stdout.write.bind( process.stdout )
       , styles = {
         type: chalk.cyan,
@@ -21,7 +23,13 @@ function log() {
         value: chalk.red
       }
 
+  loopin.log = log
   loopin.listen( '*', listener )
+
+  function log() {
+    var e = event( arguments )
+    listener( e )
+  }
 
   function listener( event ) {
     if ( _.find( opt.ignore, ( type ) => type == event.type ) )
@@ -54,6 +62,8 @@ function log() {
         write(_.repeat( ' ', typeWidth ) )
         write( pairs.join( "\n" + _.repeat( ' ', typeWidth ) ) )
       }
+    } else if ( !_.isUndefined( data ) ) {
+      column( style( 'value', toStr( data ) ) )
     }
 
     write( "\n" )

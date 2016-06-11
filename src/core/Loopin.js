@@ -1,6 +1,12 @@
 module.exports = Loopin
 
 const _ = require('lodash')
+    , stream = require('stream')
+    , EventEmitter = require('events')
+    , inherits = require('util').inherits
+
+inherits( Loopin, EventEmitter )
+
 const util = require('./util')
 
 function Loopin() {
@@ -8,10 +14,72 @@ function Loopin() {
 
   var connection
     , listeners = Object.create( null )
+    , _paths = Object.create( null )
+    , plugins = {}
+
+  EventEmitter.call( loopin )
+
+  loopin.patch = patch
+  loopin._patchStream = new stream.PassThrough( { objectMode: true } )
 
   loopin.dispatch = dispatch
   loopin.listen = listen
   loopin.plugin = plugin
+
+  loopin.plugin( require('./path') )
+  loopin.plugin( 'log' )
+
+  loopin._map = _map
+
+  function patch( data, path ) {
+    loopin.log( path, 'patch', { data: data } )
+
+    data = loopin.pathWrap( data, path )
+    loopin._patchStream.push( data )
+  }
+
+  function _newPathOb( path ) {
+    const pathOb = {}
+        , key = util.path.key( path )
+
+    pathOb.loopin = loopin
+    pathOb.path = path
+    pathOb.key = key
+    pathOb.log = ( type, data ) => loopin.log( type, path, data )
+    pathOb.patch = ( data, localPath ) =>
+      loopin.patch( data, loopin.pathResolve( path, localPath ) )
+
+    _paths[key] = pathOb
+
+    return pathOb
+  }
+
+  function _map( prefix, ctor ) {
+    prefix = util.path.normalize( prefix )
+
+    // Make sure constants from ctor are copied to
+    // generator
+    _.extend( generator, ctor )
+
+    return generator
+
+    function generator ( key, args ) {
+      const path = prefix + key
+      var child = _paths[path]
+
+      if ( !child ) {
+        child = _newPathOb( path )
+      }
+
+      if ( child && ctor ) {
+        const ctorArgs = _.slice( arguments, 1 )
+        ctor.apply( child, arguments )
+      }
+
+      return child
+    }
+  }
+
 
 
   function listen( path, callback ) {
@@ -35,7 +103,6 @@ function Loopin() {
   //
   // Plugins
   //
-  var plugins = {}
 
   function plugin( plugin ) {
     var key

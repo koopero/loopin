@@ -5,5 +5,7 @@
   'image',
   'save',
   'stdio',
-  'log'
+  'shader',
+  'log',
+  'assetDir'
 ].map( ( k ) => exports[k] = require('./'+k) )

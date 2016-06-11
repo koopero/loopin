@@ -14,8 +14,11 @@ loopin.plugin('bootstrap', {
   loopin.patch( {
     image:    { indian: "indian.png", bars: 'bars.png' },
     render:   { out: {
-      src: 'indian',
-      shader: 'rainbow',
+      src: {
+        buffer: 'indian',
+        wrapH: 'repeat'
+      },
+      shader: 'passthru',
       tex: {
         src1: 'indian'
       }
