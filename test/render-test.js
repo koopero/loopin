@@ -27,7 +27,7 @@ loopin.plugin('bootstrap', {
       width: 320,
       height: 240
     }},
-    show: 'out'
+    show: 'indian'
   })
 
   setTimeout( function () {

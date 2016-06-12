@@ -1,10 +1,8 @@
 module.exports = files
 
 files.options = require('boptions')({
-  root: {
-    '#type': 'string',
-    '#default': ''
-  }
+  '#inline': ['root'],
+  root: '#string'
 })
 
 const _ = require('lodash')
@@ -17,8 +15,9 @@ function files () {
   const loopin = this
       , opt = files.options( arguments )
 
-  loopin.cwd = loopin.cwd || pathlib.resolve( opt.root || '.' )
+  var _root
 
+  loopin.filesRoot = root
   loopin.filesResolve = resolve
 
   loopin.fileLoadText = function ( path ) {
@@ -26,9 +25,14 @@ function files () {
     return fs.readFileAsync( path, 'utf8' )
   }
 
+  function root( newRoot ) {
+    _root = newRoot || opt.root || process.cwd()
+    return _root
+  }
+
   function resolve () {
     return pathlib.resolve
-      .bind( null, loopin.cwd )
+      .bind( null, loopin.filesRoot() )
       .apply( null, _.filter( arguments ) )
   }
 

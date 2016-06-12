@@ -17,11 +17,12 @@ function wrap( data, path ) {
   path = path.split( SEP )
   path = path.filter( (a )=>!!a )
 
-  path.map( function ( seg ) {
+  for ( var i = path.length - 1; i >= 0; i -- ) {
+    var seg = path[i]
     var wrap = {}
     wrap[seg] = data
     data = wrap
-  } )
+  }
 
   return data
 }

@@ -1,8 +1,8 @@
 module.exports = loopinLog
 loopinLog.options = require('boptions')({
   'ignore': {
-    '#type': 'array',
-    '#default': ['frame']
+    type: 'array',
+    value: ['frame']
   }
 })
 

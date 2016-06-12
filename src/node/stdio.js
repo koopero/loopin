@@ -33,7 +33,7 @@ function Stdio( proc ) {
     return Promise.resolve()
   }
 
-  loopin.patch = patch
+  loopin._patchStream.on('data',patch)
 
   proc.stdout.setEncoding( 'utf8' )
   const stdout = byline( proc.stdout )
@@ -44,9 +44,8 @@ function Stdio( proc ) {
 
 
 
-  function patch( value, path ) {
-    value = util.wrapObjectInPath( value, path )
-
+  function patch( value ) {
+    // console.warn('stdio.patch', value )
     const json = JSON.stringify( value )
     proc.stdin.write( json+'\n' )
   }
