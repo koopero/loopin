@@ -20,6 +20,8 @@ function preset() {
   }
 
   function presetAdd( key, data ) {
+    // console.log("presetAdd", key, data )
+    loopin.log('presetAdd', { key: key, data: data })
     presets[key] = data
   }
 }

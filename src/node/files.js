@@ -26,7 +26,7 @@ function files () {
   }
 
   function root( newRoot ) {
-    _root = newRoot || opt.root || process.cwd()
+    _root = newRoot || _root || opt.root || process.cwd()
     return _root
   }
 

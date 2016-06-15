@@ -1,11 +1,13 @@
 [
   'bootstrap',
   'files',
+  'tmp',
   'presetDir',
   'image',
   'save',
   'stdio',
   'shader',
   'log',
-  'assetDir'
+  'assetDir',
+  'bufferFile'
 ].map( ( k ) => exports[k] = require('./'+k) )

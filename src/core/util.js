@@ -35,6 +35,9 @@ exports.path.normalize = function ( a ) {
 }
 
 exports.path.key = function ( a ) {
-  a = a.split('/').filter( ( b ) => !!b ).slice( a.length - 1 )
-  return a.join('')
+  a = a.split('/')
+  a = a.filter( ( b ) => !!b )
+  a = a.slice( a.length - 1 )
+  a = a.join('')
+  return a
 }

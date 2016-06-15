@@ -1,10 +1,11 @@
 module.exports = presetDir
 presetDir.options = require('boptions')( {
   '#inline': 'dir',
-  'dir': {
-
-  }
+  'dir': 'preset',
+  'async': false,
 })
+
+presetDir.extensions = ['json','yaml']
 
 const _ = require('lodash')
     , path = require('path')
@@ -14,35 +15,46 @@ const _ = require('lodash')
     , fs = Promise.promisifyAll( require('fs') )
     , yaml = require('js-yaml')
 
+
+
 function presetDir() {
   const loopin = this
 
-  const extensions = ['json','yaml']
+  loopin.plugin( 'preset' )
+  loopin.plugin( 'assetDir' )
+  loopin.presetDir = presetDir.bind( loopin )
 
-  loopin.presetDir = presetDir
+  const opt = presetDir.options( arguments )
+      , dir = loopin.filesResolve( opt.dir )
 
-  return Promise.mapSeries( _.slice( arguments ), presetDir )
+  loopin.log('presetDir', {
+    dir: dir,
+    root: loopin.filesRoot()
+  } )
 
-  function presetDir( dir ) {
 
-    const pattern = path.resolve( dir, '**/*.@(json|yaml)' )
-    console.log('presetDir', dir )
-    return globAsync( pattern  )
-      .mapSeries( eachFile )
+  const assetDir = loopin.assetDir({
+    dir: dir,
+    extensions: presetDir.extensions,
+    callback: opt.async ? loadPresetAsync : loadPresetSync,
+    deep: true,
+    scan: false
+  })
 
-    function eachFile( file ) {
-      const ext = path.extname( file )
-          , rel = _.trim( file.substr( dir.length ), path.sep )
-          , key = rel.substr( 0, rel.length - ext.length )
+  return opt.async ? assetDir.scan() : assetDir.scanSync()
 
-      console.log( 'add', key, file  )
-
-      return fs.readFileAsync( file, 'utf8' )
-        .then( yaml.load )
-        .then( function ( data ) {
-          loopin.presetAdd( key, data )
-        } )
-
-    }
+  function loadPresetSync( path, key, type ) {
+    var data = fs.readFileSync( path, 'utf8')
+    data = yaml.load( data )
+    loopin.presetAdd( key, data )
   }
+
+  function loadPresetAsync( file ) {
+    return fs.readFileAsync( file, 'utf8' )
+    .then( yaml.load )
+    .then( function ( data ) {
+      loopin.presetAdd( key, data )
+    } )
+  }
+
 }

@@ -1,6 +1,7 @@
 module.exports = Loopin
 
 const _ = require('lodash')
+    , Promise = require('bluebird')
     , stream = require('stream')
     , EventEmitter = require('events')
     , inherits = require('util').inherits
@@ -30,6 +31,26 @@ function Loopin() {
   loopin.plugin( 'log' )
 
   loopin._map = _map
+
+  loopin.close = close
+
+  var _closing = false
+    , _closingPromise
+  function close() {
+    if ( _closingPromise )
+      return _closingPromise
+
+    _closingPromise = Promise.resolve()
+
+    loopin.__closePromises = []
+    loopin.emit('close')
+
+    _closingPromise = _closingPromise
+      .then( () => loopin.__closePromises )
+      .then( Promise.all )
+
+    return _closingPromise
+  }
 
   function patch( data, path ) {
     loopin.log( path, 'patch', { data: data } )
@@ -73,10 +94,10 @@ function Loopin() {
 
       if ( child && ctor ) {
         const ctorArgs = _.slice( arguments, 1 )
-        ctor.apply( child, arguments )
+        const result = ctor.apply( child, arguments )
       }
 
-      return child
+      return result || child
     }
   }
 

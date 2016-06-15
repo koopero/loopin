@@ -22,15 +22,16 @@ function Stdio( proc ) {
 
   EventEmitter.call( stdio )
 
+
+  loopin.on('close', onClose )
+
+
   var _destroy = loopin.destroy
-  loopin.destroy = function () {
-    if ( proc )
-      proc.kill()
 
-    if ( _.isFunction( _destroy ) )
-      return Promise.resolve( _destroy() )
-
-    return Promise.resolve()
+  function onClose() {
+    if ( stdio.proc ) {
+      stdio.proc.kill()
+    }
   }
 
   loopin._patchStream.on('data',patch)

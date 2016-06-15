@@ -28,14 +28,9 @@ function bootstrap() {
     .then( function ( build ) {
 
 
-      loopin.plugin( 'log' )
       loopin.plugin( 'stdio', build.process )
-      loopin.plugin( 'read' )
-      loopin.plugin( 'show' )
-      loopin.plugin( 'preset' )
-      loopin.plugin( 'files' )
-      loopin.plugin( 'presetDir' )
-      loopin.plugin( 'save' )
+
+      loopin.emit( 'open' )
 
       return loopin
     })

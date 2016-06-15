@@ -1,6 +1,6 @@
 {
   "name": "loopin",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "Loopin",
   "main": "node.js",
   "scripts": {
@@ -18,7 +18,8 @@
     "glob": "^7.0.3",
     "js-yaml": "^3.5.5",
     "lodash": "^4.11.1",
-    "loopin-builder": "^0.3.0"
+    "loopin-builder": "^0.3.0",
+    "unique-file-name": "0.0.0"
   },
   "devDependencies": {},
   "repository": {
