@@ -87,7 +87,9 @@ function Stdio( proc ) {
 
       default:
         event.data = event.data || {}
-        event.data.stderr = captureGet( event.path )
+        var cap = captureGet( event.path )
+        if ( 'undefined' != typeof cap )
+          event.data.stderr = cap
         loopin.dispatch( event )
     }
   }

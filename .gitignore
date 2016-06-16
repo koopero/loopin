@@ -1,1 +1,3 @@
 node_modules/
+test/data/tmp/
+test/data/result/

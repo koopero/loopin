@@ -1,17 +1,21 @@
 module.exports = loopinBufferFile
 
 bufferFile.options = require('boptions')({
+  '#inline': ['dest'],
   format: 'png',
-  dest: { type: 'string' },
-  tmp: '%b.%08i.%e',
+  dest: '#string',
+  template: {},
   save: true,
   wait: true,
 })
+
+const util = require('../core/util')
 
 function loopinBufferFile() {
   const loopin = this
 
   loopin.plugin('tmp')
+  loopin.plugin('save')
 
   loopin.bufferFile = loopin._map( 'bufferFile/', bufferFile )
 }
@@ -30,21 +34,30 @@ function bufferFile() {
   //
   //
 
-  function getFilePath() {
-    if ( opt.dest )
-      return opt.dest
+  const opt = bufferFile.options( arguments )
+  // console.log('bufferFile', opt, arguments )
 
-    const filename = key + '.' + format
+  var dest
+
+  if ( opt.dest ) {
+    dest = opt.dest
+  } else {
+    var extension = util.leadingDot( opt.format )
+      , name = key+'.BF'+extension
+
+    dest = loopin.tmpFile( { template: opt.template, name: name } )
   }
 
+  var promise = Promise.resolve()
 
+  if ( opt.save ) {
+    var savePromise = loopin.save( key, dest )
+    if ( opt.wait ) {
+      promise = promise.then( () => savePromise )
+    }
+  }
 
+  promise = promise.then( () => dest )
 
-
-
-  const opt = bufferFile.options( arguments )
-
-  // var promise = Promise.resolve( { key: key })
-  //
-  // return promise
+  return promise
 }

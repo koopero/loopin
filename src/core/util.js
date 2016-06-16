@@ -1,7 +1,9 @@
 const _ = require('lodash')
+const util = exports
 
+util.leadingDot = ( str ) => !str || !str.length ? '' : str[0] == '.' ? str : '.' + str 
 
-exports.wrapObjectInPath = function wrapObjectInPath( ob, path ) {
+util.wrapObjectInPath = function wrapObjectInPath( ob, path ) {
   if ( _.isString( path ) ) {
     path = path.split(/[\.\/]/g)
   }
@@ -20,9 +22,9 @@ exports.wrapObjectInPath = function wrapObjectInPath( ob, path ) {
 }
 
 
-exports.path = {}
+util.path = {}
 
-exports.path.normalize = function ( a ) {
+util.path.normalize = function ( a ) {
   a = a.replace( /\/\//g, '/' )
 
   if ( a[0] == '/' && a.length > 1 )
@@ -34,7 +36,7 @@ exports.path.normalize = function ( a ) {
   return a
 }
 
-exports.path.key = function ( a ) {
+util.path.key = function ( a ) {
   a = a.split('/')
   a = a.filter( ( b ) => !!b )
   a = a.slice( a.length - 1 )

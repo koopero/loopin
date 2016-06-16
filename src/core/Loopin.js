@@ -94,7 +94,7 @@ function Loopin() {
 
       if ( child && ctor ) {
         const ctorArgs = _.slice( arguments, 1 )
-        const result = ctor.apply( child, arguments )
+        const result = ctor.apply( child, ctorArgs )
       }
 
       return result || child

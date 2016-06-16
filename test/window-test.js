@@ -4,7 +4,7 @@ const loopin = util.newLoopin()
 
 loopin.plugin('read')
 
-loopin.preset('bars')
+loopin.preset('indian')
 
 
 
@@ -24,7 +24,7 @@ loopin.on( 'open', () =>
   .then( ( data ) => loopin.log( 'fullscreen', '_test', { data: data } ) )
   .then( modeDelay )
 
-  .then( () => loopin.patch( { fullscreen: false, width: 160, height: 120 }, 'window' ) )
+  .then( () => loopin.patch( { fullscreen: true, width: 160, height: 120 }, 'window' ) )
   .then( readDelay )
   .then( () => loopin.read("window") )
   .then( ( data ) => loopin.log( 'nintendo', '_test', { data: data } ) )

@@ -1,23 +1,11 @@
-module.exports = save
+module.exports = loopinSave
 
-const options = require('boptions')({
+loopinSave.options = require('boptions')({
   '#inline': [ 'key', 'dest' ],
-  key: {
-    '#type': 'string'
-  },
-
-  dest: {
-    '#type': 'string'
-  },
-
-  format: {
-    '#type': 'string'
-  },
-
-  quality: {
-    '#type': 'string'
-  },
-
+  key: '#string',
+  dest: '#string',
+  format: '#string',
+  quality: '#string',
 })
 
 const _ = require('lodash')
@@ -25,30 +13,26 @@ const _ = require('lodash')
 
 const Promise = require('bluebird')
 
-
-function save() {
+function loopinSave() {
   const loopin = this
 
   loopin.save = save
 
   function save( key, url ) {
-    const opt = options( arguments )
+    const opt = loopinSave.options( arguments )
     key = opt.key
-    dest = opt.dest
 
-    if ( !dest ) {
-      dest = key +'.png'
+    if ( !opt.dest ) {
+      opt.dest = key +'.png'
     }
 
     const path = 'save/'+key
-        , patch = _.pick( opt, 'dest', 'iterations', 'format', 'quality' )
-
-    patch.dest = dest
+        , patch = opt
 
     // Openframeworks kind of sucks at writing files with the wrong
     // file extensions, so give it a little hint.
-    const extname = pathlib.extname( dest )
-    patch['format'] = (
+    const extname = pathlib.extname( opt.dest )
+    patch['format'] = patch['format'] || (
       extname == '.png' ? 'png' :
       extname == '.jpg' ? 'jpg' : undefined
     )
