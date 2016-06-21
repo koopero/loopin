@@ -20,15 +20,25 @@ function loopinLog() {
         path: chalk.magenta,
         delim: chalk.dim,
         key: chalk.blue,
-        value: chalk.red
+        value: chalk.red,
+        section: chalk.white
       }
 
   loopin.log = log
+  loopin.logSection = logSection
   loopin.listen( '*', listener )
 
   function log() {
     var e = event( arguments )
     listener( e )
+  }
+
+  function logSection ( name ) {
+    write('\n')
+
+    write( style('delim', '--------------- '))
+    write( style('section', name||'' ))
+    write('\n')
   }
 
   function listener( event ) {

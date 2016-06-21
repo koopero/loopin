@@ -1,25 +1,11 @@
-const util = require('./util')
+const bufferKey = 'indian'
 
-const loopin = util.newLoopin()
+require('./test')( 'bufferFile', bufferKey, function ( loopin ) {
+  loopin.plugin('bufferFile')
 
-loopin.preset('bars')
-loopin.plugin('bufferFile')
+  return loopin.testBenchmark( function () {
+    var result = loopin.bufferFile( bufferKey, 'result/bufferFile-test.png' )
+    return result
+  } )
 
-
-const Promise = require('bluebird')
-    , modeDelay = () => Promise.delay( 1000 )
-    , readDelay = () => Promise.delay( 100 )
-
-const buffer = 'bars'
-
-loopin.on( 'open', () =>
-  loopin.bufferFile( buffer )
-  .then( ( result ) => loopin.log('done', 'test', { result: result } ) )
-  .then( modeDelay )
-
-  // .then( () => loopin.bufferFile( buffer, 'result/ping.png' ) )
-  // .then( ( result ) => loopin.log('done', 'test', { result: result } ) )
-  // .then( modeDelay )
-
-  .then( () => loopin.close() )
-)
+} )

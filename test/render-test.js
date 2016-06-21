@@ -1,18 +1,6 @@
-const util = require('./util')
-
-const Loopin = require('../node.js')
-    , loopin = Loopin()
-
-loopin.plugin('log')
-loopin.plugin('bootstrap', {
-  builder: {
-    verbose: true,
-    cwd: util.resolveData()
-  }
-})
-.then( function () {
+require('./test')( 'render-test', function ( loopin ) {
   loopin.patch( {
-    image:    { indian: "indian.png", bars: 'bars.png' },
+    image:    { indian: "image/indian.png", bars: 'image/bars.png' },
     render:   { out: {
       src: {
         buffer: 'indian',
@@ -27,17 +15,8 @@ loopin.plugin('bootstrap', {
       width: 320,
       height: 240
     }},
-    show: 'indian'
+    show: 'out'
   })
 
-  setTimeout( function () {
-    loopin.read('render')
-      .then( console.log )
-  },5000)
-
-  setTimeout( function () {
-    loopin.destroy()
-    .then( () => console.log('done') )
-  },120000)
-
+  return loopin.testDelay()
 })

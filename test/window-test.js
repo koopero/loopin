@@ -1,34 +1,13 @@
-const util = require('./util')
+require('./test')( 'window-test', 'indian', function ( loopin ) {
 
-const loopin = util.newLoopin()
-
-loopin.plugin('read')
-
-loopin.preset('indian')
-
-
-
-const Promise = require('bluebird')
-    , modeDelay = () => Promise.delay( 1000 )
-    , readDelay = () => Promise.delay( 100 )
-
-loopin.on( 'open', () =>
-  Promise.resolve()
-  .then( () => loopin.read("window") )
+  return loopin.read("window")
   .then( ( data ) => loopin.log( 'initial', '_test', { data: data } ) )
-  .then( modeDelay )
+  .then( () => loopin.testResult( 'window',  'initial' ) )
 
   .then( () => loopin.patch( { fullscreen: true }, 'window' ) )
-  .then( readDelay )
-  .then( () => loopin.read("window") )
-  .then( ( data ) => loopin.log( 'fullscreen', '_test', { data: data } ) )
-  .then( modeDelay )
+  .then( () => loopin.testResult( 'window', 'fullscreen' ) )
 
-  .then( () => loopin.patch( { fullscreen: true, width: 160, height: 120 }, 'window' ) )
-  .then( readDelay )
-  .then( () => loopin.read("window") )
-  .then( ( data ) => loopin.log( 'nintendo', '_test', { data: data } ) )
-  .then( modeDelay )
+  .then( () => loopin.patch( { fullscreen: true, width: 256, height: 224 }, 'window' ) )
+  .then( () => loopin.testResult( 'window', 'snes' ) )
 
-  .then( () => loopin.close() )
-)
+} )

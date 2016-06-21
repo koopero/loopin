@@ -57,7 +57,11 @@ function bufferFile() {
     }
   }
 
-  promise = promise.then( () => dest )
+  promise = promise.then( function () {
+    return {
+      path: dest
+    }
+  } )
 
   return promise
 }

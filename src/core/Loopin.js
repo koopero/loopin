@@ -53,7 +53,7 @@ function Loopin() {
   }
 
   function patch( data, path ) {
-    loopin.log( path, 'patch', { data: data } )
+    // loopin.log( path, 'patch', { data: data } )
 
     data = loopin.pathWrap( data, path )
     loopin._patchStream.push( data )
