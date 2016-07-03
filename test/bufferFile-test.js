@@ -4,8 +4,11 @@ require('./test')( 'bufferFile', bufferKey, function ( loopin ) {
   loopin.plugin('bufferFile')
 
   return loopin.testBenchmark( function () {
-    var result = loopin.bufferFile( bufferKey, 'result/bufferFile-test.png' )
+    var result = loopin.bufferFile( bufferKey )
     return result
   } )
+  .then( () => loopin.testBenchmark( () =>
+    loopin.bufferFile( bufferKey, false )
+  ))
 
 } )

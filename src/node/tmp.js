@@ -22,18 +22,28 @@ function loopinTmp() {
 
   function tmpFile( _template_ ) {
     const opt = tmpFile_options( arguments )
-        , frame = loopin.frame()
         , name = opt.name
-        , index = frame.index
-        , time = frame.time
-        , template = opt.template
+        , frame = loopin.frame()
+        , relPath = UNF.format( opt.template, name, frame.index, frame.time )
+        , absPath = loopin.filesResolve( relPath )
+        , result = {
+          file: relPath,
+          absolute: absPath,
+          created: new Date().getTime()
+        }
 
-    console.log( 'tmpFile', template, name, index, time )
+    Object.defineProperty( result, 'age', {
+      enumerable: true,
+      configurable: true,
+      get: () =>  new Date().getTime() - parseFloat( result.created )
+    } )
 
-    template = loopin.filesResolve( template )
-
-    return UNF.format( template, name, index, time )
-
-
+    return result
   }
+}
+
+function tmpFile() {
+  const self = this
+
+
 }

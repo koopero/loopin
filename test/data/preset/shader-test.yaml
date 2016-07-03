@@ -1,0 +1,26 @@
+image:
+  input: image/water.jpg
+  displace: image/rgClouds.jpg
+
+render:
+  output:
+    src: input
+    shader: displace
+
+    float:
+      amount: 10
+
+    tex:
+      displace: displace
+
+shader:
+  displace:
+    vert: shader/displace.vert
+    frag: shader/displace.frag
+
+buffer:
+  output:
+    width: 1920
+    height: 1080
+
+show: output

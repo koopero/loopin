@@ -27,10 +27,10 @@ function presetDir() {
   const opt = presetDir.options( arguments )
       , dir = loopin.filesResolve( opt.dir )
 
-  // loopin.log('presetDir', {
-  //   dir: dir,
-  //   root: loopin.filesRoot()
-  // } )
+  loopin.log('presetDir', {
+    dir: dir,
+    root: loopin.filesRoot()
+  } )
 
 
   const assetDir = loopin.assetDir({

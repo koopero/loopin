@@ -1,9 +1,8 @@
 module.exports = loopinBufferFile
 
 bufferFile.options = require('boptions')({
-  '#inline': ['dest'],
+  '#inline': ['wait'],
   format: 'png',
-  dest: '#string',
   template: {},
   save: true,
   wait: true,
@@ -29,39 +28,55 @@ function bufferFile() {
   //
   // Object setup
   //
+  // Cache of last save for every format.
+  const _last = self._last = self._last || {}
 
   //
-  //
+  // D
   //
 
   const opt = bufferFile.options( arguments )
   // console.log('bufferFile', opt, arguments )
 
-  var dest
+  //
+  var result
 
-  if ( opt.dest ) {
-    dest = opt.dest
-  } else {
-    var extension = util.leadingDot( opt.format )
-      , name = key+'.BF'+extension
+  var extension = util.leadingDot( opt.format )
+    , hash = opt.format
+    , name = key+'.BF'+extension
 
-    dest = loopin.tmpFile( { template: opt.template, name: name } )
-  }
+
 
   var promise = Promise.resolve()
 
+  // console.log('bufferFile', opt, _last, self )
+
   if ( opt.save ) {
-    var savePromise = loopin.save( key, dest )
-    if ( opt.wait ) {
+    var savePromise = save()
+
+    if ( opt.wait || !_last[hash] ) {
       promise = promise.then( () => savePromise )
     }
   }
 
-  promise = promise.then( function () {
-    return {
-      path: dest
-    }
-  } )
+  // The target
+  promise = promise.then( () => _last[hash] )
 
   return promise
+
+  function save() {
+    const tmp = loopin.tmpFile( {
+      name: name,
+      template: opt.template,
+    } )
+
+    return loopin.save( key, {
+      dest: tmp.file,
+      format: opt.format
+    } )
+    .then( function () {
+      _last[hash] = tmp
+    })
+    .then( () => tmp )
+  }
 }

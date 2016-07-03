@@ -29,7 +29,7 @@ function assetDir() {
   const loopin = this
       , self = Object.create( assetDir.prototype )
       , opt = assetDir.options( arguments )
-      , dir = loopin.filesResolve( opt.dir )
+      , dir = loopin.filesAbsolute( opt.dir )
 
   self.scan = scan
   self.scanSync = scanSync

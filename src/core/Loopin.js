@@ -20,6 +20,8 @@ function Loopin() {
 
   EventEmitter.call( loopin )
 
+  loopin.Promise = Promise
+
   loopin.patch = patch
   loopin._patchStream = new stream.PassThrough( { objectMode: true } )
 
@@ -53,7 +55,7 @@ function Loopin() {
   }
 
   function patch( data, path ) {
-    // loopin.log( path, 'patch', { data: data } )
+    loopin.log( path, 'patch', { data: data } )
 
     data = loopin.pathWrap( data, path )
     loopin._patchStream.push( data )

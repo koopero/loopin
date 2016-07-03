@@ -1,7 +1,6 @@
 module.exports = loopinTest
 
 const _ = require('lodash')
-    , Promise = require('bluebird')
 
 function loopinTest() {
   const loopin = this
@@ -14,6 +13,8 @@ function loopinTest() {
   loopin.testBenchmark = testBenchmark.bind( loopin )
   loopin.testDelay = testDelay.bind( loopin )
   loopin.testResult = testResult.bind( loopin )
+
+  loopin.testAnimate = testAnimate.bind( loopin )
 
 }
 
@@ -33,7 +34,7 @@ function testBenchmark() {
     , endTime
     , duration
 
-  return Promise.resolve()
+  return loopin.Promise.resolve()
   .then( function () {
     // Start clock
     startTime = new Date().getTime()
@@ -61,7 +62,7 @@ testDelay.options = require('boptions')({
 
 function testDelay() {
   const opt = testDelay.options( arguments )
-  return new Promise( function ( resolve ) {
+  return new loopin.Promise( function ( resolve ) {
     setTimeout( resolve, opt.duration )
   })
 }
@@ -81,4 +82,56 @@ function testResult() {
   .then( () => loopin.read( opt.path ) )
   .then( ( data ) => loopin.log( opt.path, opt.name, { data: data } ) )
 
+}
+
+testAnimate.options = require('boptions')({
+  '#inline': ['path','to','duration'],
+  path: '',
+  to: 1,
+  from: 0,
+  duration: 1
+})
+
+function testAnimate() {
+  const loopin = this
+      , opt = testAnimate.options( arguments )
+      , path = opt.path
+
+  var _startClock = NaN
+    , _to = opt.to
+    , _from = opt.from
+
+
+  if ( isNaN( _from ) )
+    _from = loopin.read( path )
+      .then( ( y ) => parseFloat( y ) || 0 )
+
+
+  return new loopin.Promise( function ( resolve, reject ) {
+
+    loopin.listen( 'frame', onFrame )
+
+    function onFrame( event ) {
+      const frame = event.data
+      if ( isNaN( _startClock) ) {
+        _startClock = parseFloat( frame.time )
+      }
+
+      var time = frame.time - _startClock
+        , x = Math.min( 1, time / opt.duration )
+
+      Promise.resolve( _from )
+      .then( function ( _from ) {
+        var value = _from + ( _to - _from ) * x
+        loopin.patch( value, path )
+      })
+
+      if ( x >= 1 ) {
+        resolve()
+      } else {
+        // Important! Tells loopin to keep the listener
+        return true
+      }
+    }
+  })
 }

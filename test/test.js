@@ -64,16 +64,19 @@ function test ( func ) {
 
     loopin.plugin('presetDir')
     loopin.plugin('preset')
+    loopin.plugin('log')
     loopin.plugin('test')
+
+    loopin.patch( opt.name, 'window/title')
 
     if ( opt.preset ) {
       loopin.preset( opt.preset )
     }
 
     var promise = loopin.plugin('bootstrap', {
-      builder: {
+      native: {
         verbose: true,
-        cwd: test.resolveData()
+        runCwd: test.resolveData()
       }
     })
 

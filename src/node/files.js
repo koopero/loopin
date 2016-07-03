@@ -19,6 +19,8 @@ function files () {
 
   loopin.filesRoot = root
   loopin.filesResolve = resolve
+  loopin.filesAbsolute = absolute
+
 
   loopin.fileLoadText = function ( path ) {
     path = resolve( path )
@@ -30,10 +32,20 @@ function files () {
     return _root
   }
 
-  function resolve () {
+  function absolute () {
     return pathlib.resolve
       .bind( null, loopin.filesRoot() )
       .apply( null, _.filter( arguments ) )
+  }
+
+
+  function resolve () {
+    var path = pathlib.join
+      .apply( null, _.filter( arguments ) )
+
+    console.log( 'resolve', path, _root )
+
+    return path
   }
 
 }
