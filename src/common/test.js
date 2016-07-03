@@ -62,6 +62,8 @@ testDelay.options = require('boptions')({
 
 function testDelay() {
   const opt = testDelay.options( arguments )
+      , loopin = this
+      
   return new loopin.Promise( function ( resolve ) {
     setTimeout( resolve, opt.duration )
   })
