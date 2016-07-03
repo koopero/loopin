@@ -5,7 +5,7 @@ bootstrap.options = require('boptions')( {
 
 const Promise = require('bluebird-extra')
 
-const Loopin = require('../core/Loopin')
+const Loopin = require('../core/loopin')
 
 const native = require('loopin-native')
 
