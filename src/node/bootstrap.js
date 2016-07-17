@@ -16,6 +16,8 @@ function bootstrap() {
 
   const loopin = this
 
+  loopin.plugin('files')
+
   // console.log( 'bootstrap', opt )
   const nativeOpt = {
     run: true,

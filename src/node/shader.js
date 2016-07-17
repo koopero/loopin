@@ -6,7 +6,6 @@ function loopinShader() {
   const loopin = this
 
   loopin.shader = loopin._map( 'shader/', shader )
-  loopin.shaderDir = shaderDir.bind( loopin )
 }
 
 shader.options = require('boptions')({
@@ -37,43 +36,14 @@ function shader( ) {
   })
 
   function setShader( type, source ) {
-    source = isFileName( source ) ?
-      loopin.fileLoadText( source )
-      : Promise.resolve( source )
-
-    return source
-      .then( function ( src ) {
-        self.patch( src, type )
-      })
+    if ( isFileName( source ) ) {
+      return loopin.fileLoadText( source )
+        .then( ( src ) => self.patch( src, type+'/data' ) )
+    } else {
+      return self.patch( source, type+'/data' )
+    }
   }
 
-}
-
-shaderDir.options = require('boptions')({
-  '#inline': ['dir'],
-  'dir': 'shader',
-  'scan': true,
-  'watch': false
-})
-
-function shaderDir() {
-  const loopin = this
-  const opt = shaderDir.options( arguments )
-
-  loopin.plugin('shader')
-  loopin.plugin('files')
-  loopin.plugin('assetDir')
-
-  var assetDir = loopin.assetDir( opt, {
-    extensions: loopin.shader.types,
-    callback: file
-  } )
-
-  function file( path, key, type ) {
-    const patch = {}
-    patch[type] = path
-    const shader = loopin.shader( key, patch )
-  }
 }
 
 // -----------------

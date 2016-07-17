@@ -43,8 +43,6 @@ function files () {
     var path = pathlib.join
       .apply( null, _.filter( arguments ) )
 
-    console.log( 'resolve', path, _root )
-
     return path
   }
 

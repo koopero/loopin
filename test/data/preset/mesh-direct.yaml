@@ -1,0 +1,77 @@
+render:
+  output:
+    shader: passthru
+    src: indian
+    mesh: grid
+    # mesh: flag
+    # transform:
+    #   scale: 1
+    #   x: 0
+    #   aspect: 1.5
+    #   mode: cover
+    #   rotate: 0
+    #
+    # layer:
+    #   a:
+    #     shader: rainbow
+    #     mesh: flag
+    #     transform:
+    #       scale: 1
+    #       x: 0
+    #       aspect: 1
+    #       rotate: 0
+
+image:
+  indian: image/indian.png
+
+shader:
+  grid-centre:
+    vert: shader/grid-centre.vert
+    frag: shader/grid-centre.frag
+
+
+buffer:
+  output:
+    width: 800
+    height: 800
+
+window:
+  width: 800
+  height: 800
+
+mesh:
+
+  grid:
+    grid:
+      rows: 5
+      cols: 5
+      split: true
+      weave: true
+
+  triGrid:
+    index: [ 0, 1, 2, 0, 2, 3, 0, 3, 4, 0, 4, 1 ]
+
+    vertex:
+      - [  0,  0  0, 0.5, 0.5 ]
+      - [ -1, -1, 0, 0, 0 ]
+      - [  1, -1, 0, 1, 0 ]
+      - [  1,  1, 0, 1, 1 ]
+      - [ -1,  1, 0, 0, 1 ]
+
+
+  diamond:
+    index: [ 0, 1, 3, 1, 2, 3 ]
+    vertex:
+      - [  0, -1, 0, 0, 0 ]
+      - [  1,  0, 0, 1, 0 ]
+      - [  0,  1, 0, 1, 1 ]
+      - [ -1,  0, 0, 0, 1 ]
+
+  flag:
+    index: [ 0, 1, 3, 1, 2, 3 ]
+    vertex:
+      - [ -1, -1, 0, 0, 0 ]
+      - [  1, -1, 0, 1, 0 ]
+      - [  1,  1, 0, 1, 1 ]
+      - [ -1,  1, 0, 0, 1 ]
+show: output

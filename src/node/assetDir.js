@@ -10,7 +10,7 @@ assetDir.options = require('boptions')({
   'callback': '#function',
   'scan': true,
   'deep': false,
-  'watch': false
+  'watch': true
 })
 
 const Promise = require('bluebird-extra').usePromise(require('bluebird'))
@@ -18,6 +18,7 @@ const Promise = require('bluebird-extra').usePromise(require('bluebird'))
     , globAsync = Promise.promisify( globlib )
     , globSync = globlib.sync
     , pathlib = require('path')
+    , dirwatcher = require('dirwatcher')
 
 function loopinAssetDir() {
   const loopin = this
@@ -38,8 +39,14 @@ function assetDir() {
 
   loopin.on('close', unwatch )
 
+
+  console.log('assetDir', opt )
+
   if ( opt.scan )
     scan()
+
+  if ( opt.watch )
+    watch()
 
   return self
 
@@ -74,7 +81,24 @@ function assetDir() {
   }
 
   function watch() {
+    if ( !self.watcher ) {
+      console.log('watching?', dir  )
 
+      self.watcher = dirwatcher( dir )
+      self.watcher.on('changed', onWatch )
+      // self.watcher.add( dir )
+    }
+  }
+
+  function onWatch( path, stat ) {
+    console.log('onWatch', path, stat )
+    if ( !stat )
+      return
+
+    if ( !stat.isFile() )
+      return
+
+    file( path )
   }
 
   function unwatch() {
