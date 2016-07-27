@@ -25,7 +25,7 @@ function loopinTmp() {
         , name = opt.name
         , frame = loopin.frame()
         , relPath = UNF.format( opt.template, name, frame.index, frame.time )
-        , absPath = loopin.filesResolve( relPath )
+        , absPath = loopin.filesAbsolute( relPath )
         , result = {
           file: relPath,
           absolute: absPath,

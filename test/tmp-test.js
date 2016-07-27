@@ -13,7 +13,7 @@ describe('tmp', function () {
       loopin.plugin('tmp')
 
       const result = loopin.tmpFile()
-      console.dir( result )
+      loopin.log( result )
     })
   })
 })

@@ -29,7 +29,7 @@ function bootstrap() {
       // console.log('strapped', build )
 
       loopin.plugin( 'stdio', build.process )
-      loopin.dispatch( { path: 'native', type: 'open' } )
+      loopin.dispatch( { path: 'native', type: 'open', data: { pid: build.process.pid } } )
       loopin.emit( 'open' )
 
       return loopin

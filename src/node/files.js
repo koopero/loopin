@@ -1,3 +1,5 @@
+'use strict'
+
 module.exports = files
 
 files.options = require('boptions')({
@@ -20,6 +22,7 @@ function files () {
   loopin.filesRoot = root
   loopin.filesResolve = resolve
   loopin.filesAbsolute = absolute
+  loopin.filesRelative = relative
 
 
   loopin.fileLoadText = function ( path ) {
@@ -36,6 +39,19 @@ function files () {
     return pathlib.resolve
       .bind( null, loopin.filesRoot() )
       .apply( null, _.filter( arguments ) )
+  }
+
+  function relative( path ) {
+    var _root = root()
+
+
+    if ( _root[_root.length-1] != '/' )
+      _root += '/'
+
+    if ( path.substr( 0, _root.length ) == _root )
+      path = path.substr( _root.length )
+
+    return path
   }
 
 

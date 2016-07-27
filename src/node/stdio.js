@@ -101,7 +101,7 @@ function Stdio( proc ) {
     // console.log('CAPTURE', captureKey, line )
     if ( captureKey ) {
       captureData[captureKey] = captureData[captureKey] || ''
-      captureData[captureKey] += line
+      captureData[captureKey] += line +'\n'
     } else {
       warn( line )
     }

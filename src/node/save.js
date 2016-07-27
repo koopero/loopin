@@ -11,10 +11,9 @@ loopinSave.options = require('boptions')({
 const _ = require('lodash')
     , pathlib = require('path')
 
-const Promise = require('bluebird')
-
 function loopinSave() {
   const loopin = this
+  const Promise = loopin.Promise
 
   loopin.save = save
 
@@ -44,9 +43,9 @@ function loopinSave() {
           // sucess
           cb( null, e )
         } else if ( e.type == 'error' ) {
-          cb( e.data )
+          cb( e )
         } else {
-          // Not and event we care about.
+          // Not an event we care about.
           // Returning true listens for the next one.
           return true
         }

@@ -20,6 +20,8 @@ function imageDir() {
   const loopin = this
   const opt = imageDir.options( arguments )
 
+  loopin.log('imageDir', '', opt )
+
   var assetDir = loopin.assetDir( opt, {
     extensions: loopin.image.extensions,
     callback: file

@@ -1,8 +1,10 @@
 module.exports = require('boptions')({
-  '#inline': ['path','type','time'],
+  '#inline': ['type','path','time'],
   '#leftovers': 'data',
-  'path': '<unknown>',
+  'path': '',
   'type': '<unknown>',
-  'data': '#extendValue',
+  'data': {
+    'type': 'extendValue'
+  },
   'time': NaN
 })

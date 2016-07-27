@@ -26,7 +26,7 @@ function image() {
   // Apply arguments
   //
   const opt = image.options( arguments )
-
+  loopin.log('image', self.path, opt )
   if ( opt.src ) {
     self.patch( { src: opt.src } )
   }

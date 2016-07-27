@@ -9,6 +9,6 @@ require('./test')( 'window-test', 'indian', function ( loopin ) {
 
   .then( () => loopin.patch( { fullscreen: false, title: 'SNES', width: 256, height: 224 }, 'window' ) )
   .then( () => loopin.testResult( 'window', 'snes' ) )
-  .then( () => loopin.testDelay( 10000 ) )
+  .then( () => loopin.testDelay() )
 
 } )

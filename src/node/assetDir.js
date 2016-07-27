@@ -1,3 +1,5 @@
+'use strict'
+
 module.exports = loopinAssetDir
 
 assetDir.options = require('boptions')({
@@ -32,6 +34,7 @@ function assetDir() {
       , opt = assetDir.options( arguments )
       , dir = loopin.filesAbsolute( opt.dir )
 
+
   self.scan = scan
   self.scanSync = scanSync
   self.watch = watch
@@ -39,8 +42,7 @@ function assetDir() {
 
   loopin.on('close', unwatch )
 
-
-  console.log('assetDir', opt )
+  // console.log('assetDir', opt )
 
   if ( opt.scan )
     scan()
@@ -59,7 +61,7 @@ function assetDir() {
       return
 
     if ( opt.callback )
-      opt.callback( path, key, ext )
+      opt.callback( loopin.filesRelative( path ), key, ext )
   }
 
   function globPattern() {
@@ -82,7 +84,7 @@ function assetDir() {
 
   function watch() {
     if ( !self.watcher ) {
-      console.log('watching?', dir  )
+      // console.log('watching?', dir  )
 
       self.watcher = dirwatcher( dir )
       self.watcher.on('changed', onWatch )
@@ -91,7 +93,7 @@ function assetDir() {
   }
 
   function onWatch( path, stat ) {
-    console.log('onWatch', path, stat )
+    // console.log('onWatch', path, stat )
     if ( !stat )
       return
 
