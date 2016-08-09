@@ -1,5 +1,7 @@
 const _ = require('lodash')
     , EOL = require('os').EOL
+
+
 module.exports = function yamlTop( source ) {
   var lines = []
 
@@ -19,10 +21,10 @@ module.exports = function yamlTop( source ) {
 
   lines = lines.map( ( line ) => line.replace( /^#\s*/g, '' ) )
 
-  while ( !lines[0] )
+  while ( lines.length && !lines[0] )
     lines.shift()
 
-  while ( !lines[lines.length-1] )
+  while ( lines.length && !lines[lines.length-1] )
     lines.pop()
 
   return lines.join(EOL)
