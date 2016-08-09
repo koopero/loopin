@@ -15,9 +15,7 @@ assetDir.options = require('boptions')({
   'watch': true
 })
 
-const Promise = require('bluebird-extra').usePromise(require('bluebird'))
-    , globlib = require('glob')
-    , globAsync = Promise.promisify( globlib )
+const globlib = require('glob')
     , globSync = globlib.sync
     , pathlib = require('path')
     , dirwatcher = require('dirwatcher')
@@ -31,6 +29,8 @@ function loopinAssetDir() {
 function assetDir() {
   const loopin = this
       , self = Object.create( assetDir.prototype )
+      , Promise = loopin.Promise
+      , globAsync = Promise.promisify( globlib )
       , opt = assetDir.options( arguments )
       , dir = loopin.filesAbsolute( opt.dir )
 

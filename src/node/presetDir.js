@@ -1,3 +1,5 @@
+'use strict'
+
 module.exports = presetDir
 presetDir.options = require('boptions')( {
   '#inline': 'dir',
@@ -8,18 +10,15 @@ presetDir.options = require('boptions')( {
 presetDir.extensions = ['json','yaml']
 
 const _ = require('lodash')
-    , path = require('path')
-    , Promise = require('bluebird-extra')
-    , glob = require('glob')
-    , globAsync = Promise.promisify( glob )
-    , fs = Promise.promisifyAll( require('fs') )
     , yaml = require('js-yaml')
 
 const yamlTop = require('../util/yamlTop')
 
-
 function presetDir() {
   const loopin = this
+      , Promise = loopin.Promise
+      , fs = Promise.promisifyAll( require('fs') )
+
 
   loopin.plugin( 'preset' )
   loopin.plugin( 'assetDir' )
@@ -46,6 +45,7 @@ function presetDir() {
 
   function loadPresetSync( path, key, type ) {
     path = loopin.filesAbsolute( path )
+
     var source = fs.readFileSync( path, 'utf8')
       , data = yaml.load( source )
       , meta = {
@@ -62,8 +62,9 @@ function presetDir() {
     loopin.presetAdd( key, data, meta )
   }
 
-  function loadPresetAsync( file ) {
-    return fs.readFileAsync( file, 'utf8' )
+  function loadPresetAsync( path ) {
+    path = loopin.filesAbsolute( path )
+    return fs.readFileAsync( path, 'utf8' )
     .then( yaml.load )
     .then( function ( data ) {
       loopin.presetAdd( key, data )

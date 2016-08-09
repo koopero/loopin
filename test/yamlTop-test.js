@@ -16,4 +16,21 @@ describe('yamlTop', function () {
     const result = yamlTop( source )
     assert.equal( result, 'Description\nSecond Line')
   })
+
+  it('deals with blank header', function () {
+    const source = [
+      '# ',
+      '#',
+      '#',
+      '# ',
+      '',
+      'somekey: somevalue',
+      '#ignore this comment'
+    ].join('\n')
+
+    const result = yamlTop( source )
+    assert.equal( result, '' )
+  })
+
+
 })

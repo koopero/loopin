@@ -1,7 +1,7 @@
 module.exports = Loopin
 
 const _ = require('lodash')
-    , Promise = require('bluebird')
+    , Promise = require('bluebird-extra').usePromise(require('bluebird'))
     , stream = require('stream')
     , EventEmitter = require('events')
     , inherits = require('util').inherits

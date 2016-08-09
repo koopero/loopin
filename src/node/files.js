@@ -8,14 +8,13 @@ files.options = require('boptions')({
 })
 
 const _ = require('lodash')
-    , Promise = require('bluebird')
-    , fs = Promise.promisifyAll( require('fs-extra') )
-
 const pathlib = require('path')
 
 function files () {
   const loopin = this
       , opt = files.options( arguments )
+      , Promise = loopin.Promise
+      , fs = Promise.promisifyAll( require('fs-extra') )
 
   var _root
 
