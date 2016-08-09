@@ -74,7 +74,8 @@ function bufferFile() {
       dest: tmp.file,
       format: opt.format
     } )
-    .then( function () {
+    .then( function ( event ) {
+      tmp.save = event.data
       _last[hash] = tmp
     })
     .then( () => tmp )

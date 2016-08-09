@@ -1,6 +1,6 @@
 {
   "name": "loopin",
-  "version": "0.4.11",
+  "version": "0.4.12",
   "description": "Loopin",
   "main": "node.js",
   "scripts": {
@@ -22,7 +22,9 @@
     "treebird": "^0.2.1",
     "unique-file-name": "^0.1.3"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "chai": "^3.5.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/koopero/loopin.git"

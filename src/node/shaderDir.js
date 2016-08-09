@@ -32,6 +32,7 @@ function shaderDir() {
   } )
 
   function file( path, key, type ) {
+    path = loopin.filesAbsolute( path )
     const patch = {}
     patch[type] = path
     const shader = loopin.shader( key, patch )

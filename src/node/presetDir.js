@@ -15,6 +15,7 @@ const _ = require('lodash')
     , fs = Promise.promisifyAll( require('fs') )
     , yaml = require('js-yaml')
 
+const yamlTop = require('../util/yamlTop')
 
 
 function presetDir() {
@@ -44,9 +45,21 @@ function presetDir() {
   return opt.async ? assetDir.scan() : assetDir.scanSync()
 
   function loadPresetSync( path, key, type ) {
-    var data = fs.readFileSync( path, 'utf8')
-    data = yaml.load( data )
-    loopin.presetAdd( key, data )
+    path = loopin.filesAbsolute( path )
+    var source = fs.readFileSync( path, 'utf8')
+      , data = yaml.load( source )
+      , meta = {
+        source: source
+      }
+
+    if ( _.isString( data.title ) ) {
+      meta.title = data.title
+    }
+    delete data.title
+
+    meta.description = yamlTop( source )
+
+    loopin.presetAdd( key, data, meta )
   }
 
   function loadPresetAsync( file ) {
@@ -56,5 +69,4 @@ function presetDir() {
       loopin.presetAdd( key, data )
     } )
   }
-
 }

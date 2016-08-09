@@ -10,18 +10,25 @@ function preset() {
   loopin.preset = preset
   loopin.preset._presets = presets
   loopin.presetAdd = presetAdd
+  loopin.presetList = presetList
 
   function preset( key, path ) {
     const preset = presets[key]
 
     if ( !_.isUndefined( preset ) ) {
-      return loopin.patch( preset, path )
+      return loopin.patch( preset.data, path )
     }
   }
 
-  function presetAdd( key, data ) {
-    // console.log("presetAdd", key, data )
-    // loopin.log('presetAdd', { key: key, data: data })
-    presets[key] = data
+  function presetAdd( key, data, meta ) {
+    meta = meta || {}
+    meta.name = key
+    meta.title = meta.title || key
+    meta.data = data
+    presets[key] = meta
+  }
+
+  function presetList() {
+    return presets
   }
 }
