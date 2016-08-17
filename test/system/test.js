@@ -5,7 +5,7 @@ const path = require('path')
 test.resolveData = path.resolve.bind( null, __dirname, 'data/' )
 
 test.newLoopin = function ( opt ) {
-  const Loopin = require('../node.js')
+  const Loopin = require('../../node.js')
       , loopin = Loopin()
 
   loopin.plugin('files')
@@ -56,7 +56,7 @@ function test ( func ) {
 
 
   function run() {
-    const Loopin = require('../node.js')
+    const Loopin = require('../../node.js')
         , loopin = Loopin()
 
     loopin.plugin('files')

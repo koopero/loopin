@@ -1,4 +1,4 @@
-const Loopin = require('../node')
+const Loopin = require('../../node')
     , test = require('./test')
 
 
