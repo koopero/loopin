@@ -98,15 +98,12 @@ function Stdio( proc ) {
 
 
   function capture( line, isErr ) {
-    // console.log('CAPTURE', captureKey, line )
     if ( captureKey ) {
       captureData[captureKey] = captureData[captureKey] || ''
       captureData[captureKey] += line +'\n'
     } else {
       warn( line )
     }
-
-    //TODO: Uncaptured stdio noise
   }
 
   function captureGet( path ) {
