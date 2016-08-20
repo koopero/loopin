@@ -18,7 +18,7 @@ assetDir.options = require('boptions')({
 const globlib = require('glob')
     , globSync = globlib.sync
     , pathlib = require('path')
-    , dirwatcher = require('dirwatcher')
+    , chokidar = require('chokidar')
 
 function loopinAssetDir() {
   const loopin = this
@@ -86,16 +86,19 @@ function assetDir() {
     if ( !self.watcher ) {
       // console.log('watching?', dir  )
 
-      self.watcher = dirwatcher( dir )
-      self.watcher.on('changed', onWatch )
-      // self.watcher.add( dir )
+      self.watcher = chokidar.watch( dir, {
+        persistent: false
+      } )
+
+      self.watcher.on('add', onWatch )
+      self.watcher.on('change', onWatch )
     }
   }
 
   function onWatch( path, stat ) {
     // console.log('onWatch', path, stat )
-    if ( !stat )
-      return
+    // if ( !stat )
+    //   return
 
     if ( !stat.isFile() )
       return
