@@ -27,11 +27,31 @@ function loopinLog() {
 
   loopin.log = log
   loopin.logSection = logSection
+  loopin.logShow = logShow
+  loopin.logIgnore = logIgnore
+
+
   loopin.listen( '*', listener )
 
   function log() {
     var e = event( arguments )
     listener( e )
+  }
+
+  function logShow() {
+    _.map( arguments, function ( key ) {
+      var ind = opt.ignore.indexOf( key )
+      if ( ind != -1 )
+        opt.ignore.splice( ind, 1 )
+    } )
+  }
+
+  function logIgnore() {
+    _.map( arguments, function ( key ) {
+      var ind = opt.ignore.indexOf( key )
+      if ( ind == -1 )
+        opt.ignore.push( key )
+    } )
   }
 
   function logSection ( name ) {
