@@ -3,7 +3,6 @@ bootstrap.options = require('boptions')( {
 
 })
 
-const Promise = require('bluebird-extra')
 
 const Loopin = require('../core/loopin')
 
@@ -15,6 +14,7 @@ function bootstrap() {
   const opt = bootstrap.options( arguments )
 
   const loopin = this
+      , Promise = loopin.Promise
 
   loopin.plugin('files')
 

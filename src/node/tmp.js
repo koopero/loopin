@@ -16,14 +16,14 @@ function loopinTmp() {
   const loopin = this
       , opt = loopinTmp.options( arguments )
 
-  loopin.plugin('frame')
+  loopin.plugin('clock')
 
   loopin.tmpFile = tmpFile
 
   function tmpFile( _template_ ) {
     const opt = tmpFile_options( arguments )
         , name = opt.name
-        , frame = loopin.frame()
+        , frame = loopin.clockFrame()
         , relPath = UNF.format( opt.template, name, frame.index, frame.time )
         , absPath = loopin.filesAbsolute( relPath )
         , result = {
