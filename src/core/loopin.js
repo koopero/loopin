@@ -21,6 +21,8 @@ function Loopin() {
   EventEmitter.call( loopin )
 
   loopin.Promise = Promise
+  loopin.inherits = inherits
+  loopin.EventEmitter = EventEmitter
 
   loopin.patch = patch
   loopin._patchStream = new stream.PassThrough( { objectMode: true } )

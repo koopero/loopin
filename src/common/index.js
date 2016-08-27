@@ -1,6 +1,8 @@
 exports.hook = require('./hook')
 exports.read = require('./read')
+exports.animate = require('./animate')
 exports.preset = require('./preset')
 exports.show = require('./show')
 exports.clock = require('./clock')
+exports.mouse = require('./mouse')
 exports.test = require('./test')

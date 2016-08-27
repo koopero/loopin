@@ -68,6 +68,8 @@ function test ( func ) {
     loopin.plugin('test')
 
     loopin.patch( opt.name, 'window/title')
+    loopin.patch( opt.name, 'osd/client')
+
 
     if ( opt.preset ) {
       loopin.preset( opt.preset )
