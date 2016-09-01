@@ -8,7 +8,7 @@ function loopinClock() {
 
   var currentFrame = {
     delta: 0,
-    index: -1,
+    index: 0,
     speed: 0,
     time: 0
   }

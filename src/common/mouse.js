@@ -14,8 +14,10 @@ function loopinMouse() {
   }
 
   loopin.mouse = dispatcher
-  loopin.mouseX = () => _mouseX
-  loopin.mouseY = () => _mouseY
+  loopin.mouseX = () => state.x
+  loopin.mouseY = () => state.y
+  loopin.mouseDown = () => state.down
+
   loopin.listen('input/', onInput )
 
   return dispatcher

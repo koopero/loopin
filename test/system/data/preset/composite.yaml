@@ -18,9 +18,4 @@ render:
         blend: add
         src: foreground
 
-buffer:
-  output:
-    width: 1920
-    height: 1080
-
 show: output

@@ -57,7 +57,7 @@ function loopinLog() {
   function logSection ( name ) {
     write('\n')
 
-    write( '--------------- ')
+    write( '----------------  ')
     write( name||'' )
     write('\n')
   }

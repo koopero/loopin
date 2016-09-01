@@ -7,7 +7,7 @@ uniform mat4 projectionMatrix;
 uniform mat4 modelViewProjectionMatrix;
 
 // Loopin default src
-uniform sampler2DRect srcSampler;
+uniform sampler2D srcSampler;
 uniform mat4 srcMatrix;
 
 
@@ -23,7 +23,7 @@ in vec4 normal;
 in vec2 texcoord;
 
 // Loopin texture 'displace'
-uniform sampler2DRect displaceSampler;
+uniform sampler2D displaceSampler;
 uniform mat4 displaceMatrix;
 
 uniform float amount;
@@ -39,13 +39,12 @@ void main()
     // here we move the texture coordinates
     srcCoord = vec2(texcoord.x, texcoord.y);
     srcCoord = (srcMatrix*vec4(srcCoord.x,srcCoord.y,0,1)).xy;
-    srcCoord *= textureSize( srcSampler );
+    // srcCoord *= textureSize( srcSampler );
 
     displaceCoord = vec2(texcoord.x, texcoord.y);
     displaceCoord = (displaceMatrix*vec4(displaceCoord.x,displaceCoord.y,0,1)).xy;
-    displaceCoord *= textureSize( displaceSampler );
 
-    displaceAmount = textureSize( displaceSampler ) * amount;
+    displaceAmount = vec2(amount,amount);
 
 
     // send the vertices to the fragment shader

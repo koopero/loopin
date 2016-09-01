@@ -6,7 +6,8 @@ function read() {
   loopin.read = read
 
   function read( path ) {
-    path = path || ''
+    path = loopin.pathResolve( path )
+    
     loopin.patch( path, 'read' )
     return loopin.listen( 'read::'+path )
       .then( function ( event ) {

@@ -1,7 +1,7 @@
 #version 150
 
-uniform sampler2DRect displaceSampler;
-uniform sampler2DRect srcSampler;
+uniform sampler2D displaceSampler;
+uniform sampler2D srcSampler;
 
 in vec2 srcCoord;
 in vec2 displaceCoord;

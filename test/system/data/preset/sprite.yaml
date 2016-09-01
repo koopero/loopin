@@ -1,0 +1,27 @@
+image:
+  background: image/air.jpg
+  sprite: image/shittyBear.png
+  foreground: image/starfield.jpg
+
+render:
+  output:
+    shader: colour
+    float:
+      colour: 1
+
+    layer:
+      0:
+        blend: alpha
+        src: sprite
+        transform:
+          x: 0.5
+          y: 0.5
+          scale: 0.2
+          aspect: 1
+
+buffer:
+  output:
+    width: 1920
+    height: 1080
+
+show: output

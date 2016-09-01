@@ -24,7 +24,7 @@ function preset() {
     meta = meta || {}
     meta.name = key
     meta.title = meta.title || key
-    meta.data = data
+    meta.data = require('../util/path').flattenObject( data )
     presets[key] = meta
   }
 

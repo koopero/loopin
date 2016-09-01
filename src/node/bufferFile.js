@@ -23,6 +23,7 @@ function loopinBufferFile() {
 function bufferFile() {
   const self = this
       , loopin = self.loopin
+      , Promise = loopin.Promise
       , key = self.key
 
   //
@@ -74,8 +75,8 @@ function bufferFile() {
       dest: tmp.file,
       format: opt.format
     } )
-    .then( function ( event ) {
-      tmp.save = event.data
+    .then( function ( data ) {
+      tmp.save = data
       _last[hash] = tmp
     })
     .then( () => tmp )

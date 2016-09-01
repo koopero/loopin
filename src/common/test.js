@@ -13,6 +13,7 @@ function loopinTest() {
   loopin.testBenchmark = testBenchmark.bind( loopin )
   loopin.testDelay = testDelay.bind( loopin )
   loopin.testResult = testResult.bind( loopin )
+  loopin.testPatchAndDisplay = testPatchAndDisplay.bind( loopin )
 
   loopin.testAnimate = testAnimate.bind( loopin )
 
@@ -63,7 +64,7 @@ testDelay.options = require('boptions')({
 function testDelay() {
   const opt = testDelay.options( arguments )
       , loopin = this
-      
+
   return new loopin.Promise( function ( resolve ) {
     setTimeout( resolve, opt.duration )
   })
@@ -85,6 +86,15 @@ function testResult() {
   .then( ( data ) => loopin.log( opt.path, opt.name, { data: data } ) )
 
 }
+
+function testPatchAndDisplay( data, path ) {
+  const loopin = this
+      , display = require('js-yaml').dump( data )
+
+  loopin.patch( display, 'osd/text/')
+  loopin.patch( data, path )
+}
+
 
 testAnimate.options = require('boptions')({
   '#inline': ['path','to','duration'],

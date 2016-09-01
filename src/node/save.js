@@ -25,7 +25,7 @@ function loopinSave() {
       opt.dest = key +'.png'
     }
 
-    const path = 'save/'+key
+    const path = 'save/'+key+'/'
         , patch = opt
 
     // Openframeworks kind of sucks at writing files with the wrong
@@ -41,7 +41,7 @@ function loopinSave() {
       loopin.listen( path, function ( e ) {
         if ( e.type == 'save' ) {
           // sucess
-          cb( null, e )
+          cb( null, e.data )
         } else if ( e.type == 'error' ) {
           cb( e )
         } else {

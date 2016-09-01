@@ -1,0 +1,22 @@
+window:
+  width: 1600
+  height: 1600
+
+image/pattern: image/pattern.png
+
+shader/feedback/frag: shader/feedback.frag
+
+render:
+  output:
+    src:
+      buffer: output
+      filter: linear
+    shader: feedback
+
+    layer/a:
+      blend: alpha
+      src: pattern
+      shader: rotozoomer
+
+
+show: output
