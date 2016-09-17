@@ -36,7 +36,7 @@ function loopinClock() {
       currentFrame.index = index
     }
 
-    return currentFrame.speed
+    return currentFrame.time
   }
 
   loopin.clockSpeed = function clockSpeed( speed ) {
