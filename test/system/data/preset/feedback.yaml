@@ -6,6 +6,10 @@ image/pattern: image/pattern.png
 
 shader/feedback/frag: shader/feedback.frag
 
+buffer:
+  output:
+    format: rgb32
+
 render:
   output:
     src:

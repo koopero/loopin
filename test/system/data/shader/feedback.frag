@@ -14,7 +14,7 @@ void main()
 
 
   vec4 c = texture(srcSampler, coord);
-  c *= 0.94;
+  c *= 0.996;
   c.a = 1.0;
   outputColour = c;
 }

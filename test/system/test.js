@@ -46,7 +46,6 @@ function test ( func ) {
 
   function wrapMocha() {
     describe( opt.name, function () {
-      this.timeout( 15000 )
       it('works', function ( cb ) {
         run()
         .then( () => cb() )
