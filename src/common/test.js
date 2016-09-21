@@ -89,7 +89,7 @@ function testResult() {
 
 function testPatchAndDisplay( data, path ) {
   const loopin = this
-      , display = require('js-yaml').dump( data )
+      , display = _.trim( require('js-yaml').dump( data ) )
 
   loopin.patch( display, 'osd/text/')
   loopin.patch( data, path )
@@ -97,11 +97,11 @@ function testPatchAndDisplay( data, path ) {
 
 
 testAnimate.options = require('boptions')({
-  '#inline': ['path','to','duration'],
+  '#inline': ['path','to','duration', 'from'],
   path: '',
   to: 1,
   from: 0,
-  duration: 1
+  duration: 3
 })
 
 function testAnimate() {
