@@ -2,14 +2,14 @@ module.exports = read
 
 function read() {
   const loopin = this
-
+  loopin.plugin('dispatch')
   loopin.read = read
 
   function read( path ) {
-    path = loopin.pathResolve( path )
-    
+    path = loopin.H.path.resolve( path )
+
     loopin.patch( path, 'read' )
-    return loopin.listen( 'read::'+path )
+    return loopin.dispatchListen( 'read::'+path )
       .then( function ( event ) {
         return event.data
       } )

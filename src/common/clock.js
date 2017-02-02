@@ -6,6 +6,8 @@ function loopinClock() {
   const loopin = this
       , dispatcher = new loopin.EventEmitter
 
+  loopin.plugin('dispatch')
+
   var currentFrame = {
     delta: 0,
     index: 0,
@@ -49,7 +51,7 @@ function loopinClock() {
     return currentFrame.speed
   }
 
-  loopin.listen( 'frame', onFrame )
+  loopin.dispatchListen( 'frame', onFrame )
 
   return dispatcher
 

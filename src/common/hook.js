@@ -14,7 +14,20 @@ function loopinHook() {
 
   loopin.hookAdd = hookAdd
   loopin.hookCollect = hookCollect
+  loopin.hookAll = hookAll
+  loopin.hookRemove = hookRemove
 
+
+  function hookAll( name ) {
+    const args = _.slice( arguments, 1 )
+    return Promise.resolve( hookCollect( name ) )
+    .map( value => {
+      if ( _.isFunction( value ) )
+        value = value.apply( loopin, args )
+
+      return value
+    })
+  }
 
 
   function hookAdd( name, value, options ) {
@@ -27,6 +40,17 @@ function loopinHook() {
 
     const hooksName = hooks[name] = hooks[name] || []
     hooksName.push( hook )
+    hooksName.sort( sortByWeight )
+  }
+
+  function hookRemove( name, value, options ) {
+    if ( !name || !_.isString( name ) )
+      throw new Error('Expected hook name to be string')
+
+
+    const hooksName = hooks[name] = ( hooks[name] || [] )
+    .filter( ( hook ) => hook.value != value )
+
     hooksName.sort( sortByWeight )
   }
 

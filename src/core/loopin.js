@@ -2,77 +2,55 @@ module.exports = Loopin
 
 const _ = require('lodash')
     , Promise = require('bluebird-extra').usePromise(require('bluebird'))
+    , H = require('horten')
     , stream = require('stream')
     , EventEmitter = require('events')
     , inherits = require('util').inherits
 
 inherits( Loopin, EventEmitter )
 
-const util = require('./util')
-
 function Loopin() {
   const loopin = Object.create( Loopin.prototype )
 
   var connection
-    , listeners = Object.create( null )
     , _paths = Object.create( null )
     , plugins = {}
 
   EventEmitter.call( loopin )
 
+  loopin.H = H
   loopin.Promise = Promise
   loopin.inherits = inherits
   loopin.EventEmitter = EventEmitter
 
-  loopin.patch = patch
-  loopin._patchStream = new stream.PassThrough( { objectMode: true } )
-
-  loopin.dispatch = dispatch
-  loopin.listen = listen
   loopin.plugin = plugin
 
-  loopin.plugin( require('./path') )
   loopin.plugin( 'log' )
+  loopin.plugin( 'close' )
+  loopin.plugin( 'patch' )
+  loopin.plugin( 'dispatch' )
+
 
   loopin._map = _map
 
-  loopin.close = close
 
-  var _closing = false
-    , _closingPromise
-  function close() {
-    if ( _closingPromise )
-      return _closingPromise
 
-    _closingPromise = Promise.resolve()
-
-    loopin.__closePromises = []
-    loopin.emit('close')
-
-    _closingPromise = _closingPromise
-      .then( () => loopin.__closePromises )
-      .then( Promise.all )
-
-    return _closingPromise
-  }
-
-  function patch( data, path ) {
-    loopin.log( 'patch', path, { data: data } )
-    data = loopin.pathWrap( data, path )
-
-    loopin._patchStream.push( data )
-  }
+  //
+  // Questionable Plugin Stuff
+  //
 
   function _newPathOb( path ) {
     const pathOb = {}
-        , key = util.path.key( path )
+        , key = H.path.last( path )
+
+    path = H.path.resolve( path )
 
     pathOb.loopin = loopin
     pathOb.path = path
     pathOb.key = key
     pathOb.log = ( type, data ) => loopin.log( type, path, data )
     pathOb.patch = ( data, localPath ) =>
-      loopin.patch( data, loopin.pathResolve( path, localPath ) )
+      loopin.patch( data, H.path.resolve( path, localPath ) )
 
     _paths[key] = pathOb
 
@@ -80,7 +58,7 @@ function Loopin() {
   }
 
   function _map( prefix, ctor ) {
-    prefix = util.path.normalize( prefix )
+    prefix = H.path.resolve( prefix )
 
     // Make sure constants from ctor are copied to
     // generator
@@ -90,39 +68,20 @@ function Loopin() {
 
     function generator ( key, args ) {
       const path = prefix + key
-      var child = _paths[path]
+      let child = _paths[path]
+        , result
 
       if ( !child ) {
         child = _newPathOb( path )
       }
 
       if ( child && ctor ) {
-        const ctorArgs = _.slice( arguments, 1 )
-        const result = ctor.apply( child, ctorArgs )
+        let ctorArgs = _.slice( arguments, 1 )
+        result = ctor.apply( child, ctorArgs )
       }
 
       return result || child
     }
-  }
-
-
-
-  function listen( path, callback ) {
-    return new Promise( function ( resolve, reject ) {
-      if ( !listeners[path])
-        listeners[path] = []
-
-      listeners[path].push( onEvent )
-
-      function onEvent( event ) {
-        if ( _.isFunction( callback ) ) {
-          var callbackResult = callback( event )
-        }
-
-        resolve( event )
-        return callbackResult
-      }
-    })
   }
 
   //
@@ -155,36 +114,6 @@ function Loopin() {
     plugins[key] = plugin
 
     return plugin
-  }
-
-  //
-  // Events
-  //
-
-  function dispatch( event ) {
-    const type = event.type
-        , path = event.path
-        , key = event.type + '::' + path
-
-    runListeners( '*' )
-    runListeners( type )
-    runListeners( path )
-    runListeners( key )
-
-    function runListeners( key ) {
-      const listenersForKey = listeners[key]
-      if ( _.isArray( listenersForKey ) ) {
-        listeners[key] = listenersForKey.map( function ( listener ) {
-
-          if ( _.isFunction( listener ) ) {
-            var result = listener.call( loopin, event )
-          }
-
-          if ( result )
-            return listener
-        }).filter( ( l ) => !!l )
-      }
-    }
   }
 
   return loopin

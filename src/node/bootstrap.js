@@ -6,7 +6,7 @@ bootstrap.options = require('boptions')( {
 
 const Loopin = require('../core/loopin')
 
-const native = require('loopin-native')
+const loopinNative = require('loopin-native')
 
 
 
@@ -24,12 +24,10 @@ function bootstrap() {
     runCwd: loopin.filesAbsolute()
   }
 
-  return native( nativeOpt )
+  return loopinNative( nativeOpt )
     .then( function ( build ) {
-      // console.log('strapped', build )
-
       loopin.plugin( 'stdio', build.process )
-      loopin.dispatch( { path: 'native', type: 'open', data: { pid: build.process.pid } } )
+      loopin.dispatchEvent( { path: 'native', type: 'open', data: { pid: build.process.pid } } )
       loopin.emit( 'open' )
 
       return loopin

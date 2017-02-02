@@ -15,6 +15,8 @@ function loopinSave() {
   const loopin = this
   const Promise = loopin.Promise
 
+  loopin.plugin('dispatch')
+
   loopin.save = save
 
   function save( key, url ) {
@@ -36,20 +38,15 @@ function loopinSave() {
       extname == '.jpg' ? 'jpg' : undefined
     )
 
-    return Promise.fromCallback( function ( cb ) {
-      loopin.patch( patch, path )
-      loopin.listen( path, function ( e ) {
-        if ( e.type == 'save' ) {
-          // sucess
-          cb( null, e.data )
-        } else if ( e.type == 'error' ) {
-          cb( e )
-        } else {
-          // Not an event we care about.
-          // Returning true listens for the next one.
-          return true
-        }
-      } )
-    })
+    loopin.patch( patch, path )
+
+    return loopin.dispatchListen( path )
+    .then( ( event ) => {
+      if ( event.type == 'save' ) {
+        return event.data
+      }
+
+      event._throw()
+    } )
   }
 }

@@ -5,6 +5,9 @@ const _ = require('lodash')
 function loopinMouse() {
   const loopin = this
 
+  loopin.plugin('dispatch')
+
+
   const dispatcher = new loopin.EventEmitter()
   const state = {
     x:    NaN,
@@ -18,7 +21,7 @@ function loopinMouse() {
   loopin.mouseY = () => state.y
   loopin.mouseDown = () => state.down
 
-  loopin.listen('input/', onInput )
+  loopin.dispatchListen('input/', onInput )
 
   return dispatcher
 

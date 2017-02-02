@@ -30,4 +30,12 @@ function image() {
   if ( opt.src ) {
     self.patch( { src: opt.src } )
   }
+
+  return loopin.dispatchListen( self.path )
+    .then( ( event ) => {
+      if ( event.type == 'done' )
+        return event.data
+
+      throw new Error('Error loading image')
+    } )
 }

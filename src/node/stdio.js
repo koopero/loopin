@@ -1,19 +1,24 @@
-module.exports = Stdio
+module.exports = loopinStdio
 
 const util = require('../core/util')
 
 const _ = require('lodash')
+    , H = require('horten')
     , EventEmitter = require('events')
     , byline = require('byline')
     , path = require('path')
 
 
-require('util').inherits(Stdio, EventEmitter);
+require('util').inherits(loopinStdio, EventEmitter);
 
-function Stdio( proc ) {
+function loopinStdio( proc ) {
   const loopin = this
 
-  const stdio = Object.create( Stdio.prototype )
+  // Make sure proc is at least close to a real ChildProcess
+  if ( !proc || !proc.stdout || typeof proc.stdout.on != 'function' )
+    throw new Error('argument must be ChildProcess')
+
+  const stdio = Object.create( loopinStdio.prototype )
       , captureData = {}
 
   stdio.proc = proc
@@ -22,19 +27,15 @@ function Stdio( proc ) {
 
   EventEmitter.call( stdio )
 
+  loopin.plugin('patch')
 
-  loopin.on('close', onClose )
+  loopin.hookAdd('close', onClose )
+  loopin.hookAdd('patch', onPatch )
 
 
   var _destroy = loopin.destroy
 
-  function onClose() {
-    if ( stdio.proc ) {
-      stdio.proc.kill()
-    }
-  }
 
-  loopin._patchStream.on('data',patch)
 
   proc.stdout.setEncoding( 'utf8' )
   const stdout = byline( proc.stdout )
@@ -43,10 +44,17 @@ function Stdio( proc ) {
   stdout.on('data', ( line ) => onLine( line ) )
   stderr.on('data', ( line ) => onLine( line, true ) )
 
+  onPatch( loopin.patchGet() )
+
+  function onClose() {
+    if ( stdio.proc ) {
+      stdio.proc.kill()
+    }
+  }
 
 
-  function patch( value ) {
-    // console.warn('stdio.patch', value )
+  function onPatch( value, path ) {
+    value = H.wrap( value, path )
     const json = JSON.stringify( value )
     proc.stdin.write( json+'\n' )
   }
@@ -59,6 +67,8 @@ function Stdio( proc ) {
 
 
   function onLine( line, isErr ) {
+    // console.warn( '!!!!', line )
+
     try {
       var event = JSON.parse( line )
     } catch ( e ) {}
@@ -71,8 +81,6 @@ function Stdio( proc ) {
     } else {
       onEvent( event )
     }
-
-
   }
 
   function onEvent( event ) {
@@ -90,7 +98,7 @@ function Stdio( proc ) {
         var cap = captureGet( event.path )
         if ( 'undefined' != typeof cap )
           event.data.stderr = cap
-        loopin.dispatch( event )
+        loopin.dispatchEvent( event )
     }
   }
 

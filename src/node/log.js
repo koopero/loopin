@@ -25,16 +25,18 @@ function loopinLog() {
         section: chalk.white
       }
 
+  loopin.plugin( 'dispatch' )
+
   loopin.log = log
   loopin.logSection = logSection
   loopin.logShow = logShow
   loopin.logIgnore = logIgnore
 
 
-  loopin.listen( '*', listener )
+  loopin.dispatchListen( '*', listener )
 
   function log() {
-    var e = event( arguments )
+    var e = event.fromArguments( arguments )
     listener( e )
   }
 

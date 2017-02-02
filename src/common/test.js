@@ -7,6 +7,8 @@ function loopinTest() {
 
   loopin.plugin('log')
   loopin.plugin('read')
+  loopin.plugin('dispatch')
+
 
 
   loopin.testLog = loopin.log.bind( loopin, '_test_')
@@ -65,7 +67,7 @@ function testDelay() {
   const opt = testDelay.options( arguments )
       , loopin = this
 
-  return new loopin.Promise( function ( resolve ) {
+  return new (loopin.Promise)( function ( resolve ) {
     setTimeout( resolve, opt.duration )
   })
 }
@@ -119,9 +121,9 @@ function testAnimate() {
       .then( ( y ) => parseFloat( y ) || 0 )
 
 
-  return new loopin.Promise( function ( resolve, reject ) {
+  return new (loopin.Promise)( function ( resolve, reject ) {
 
-    loopin.listen( 'frame', onFrame )
+    loopin.dispatchListen( 'frame', onFrame )
 
     function onFrame( event ) {
       const frame = event.data

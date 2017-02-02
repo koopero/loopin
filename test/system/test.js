@@ -62,6 +62,7 @@ function test ( func ) {
     loopin.filesRoot( test.resolveData() )
 
     loopin.plugin('presetDir')
+    loopin.presetDir( test.resolveData('preset') )
     loopin.plugin('preset')
     loopin.plugin('log')
     loopin.plugin('test')
@@ -80,6 +81,8 @@ function test ( func ) {
         runCwd: test.resolveData()
       }
     })
+
+    promise = promise.delay(1000)
 
     if ( opt.func ) {
       promise = promise.then( () => opt.func( loopin ) )
