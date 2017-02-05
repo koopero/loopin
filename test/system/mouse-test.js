@@ -12,5 +12,5 @@ require('./test')( 'mouse-test', 'sprite', function ( loopin ) {
   } )
 
   return Promise.resolve()
-  .then( () => loopin.testDelay( 30000 ) )
+  .then( () => loopin.testDelay( 5000 ) )
 } )

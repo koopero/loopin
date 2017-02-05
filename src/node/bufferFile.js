@@ -68,7 +68,7 @@ function bufferFile() {
   function save() {
     const tmp = loopin.tmpFile( {
       name: name,
-      template: opt.template,
+      template: opt.template
     } )
 
     return loopin.save( key, {

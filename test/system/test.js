@@ -4,28 +4,6 @@ const path = require('path')
 
 test.resolveData = path.resolve.bind( null, __dirname, 'data/' )
 
-test.newLoopin = function ( opt ) {
-  const Loopin = require('../../node.js')
-      , loopin = Loopin()
-
-  loopin.plugin('files')
-  loopin.filesRoot( test.resolveData() )
-
-  loopin.plugin('presetDir')
-
-  loopin.plugin('preset')
-
-  loopin.plugin('bootstrap', {
-    builder: {
-      verbose: true,
-      cwd: test.resolveData()
-    }
-  })
-
-
-  return loopin
-}
-
 test.options = require('boptions')({
   '#inline': ['name','preset', 'func'],
   'name': 'anonymous-test',
@@ -62,7 +40,6 @@ function test ( func ) {
     loopin.filesRoot( test.resolveData() )
 
     loopin.plugin('presetDir')
-    loopin.presetDir( test.resolveData('preset') )
     loopin.plugin('preset')
     loopin.plugin('log')
     loopin.plugin('test')

@@ -7,6 +7,7 @@ new H.Tracer( {
 require('./test')( 'horten-test', function ( loopin ) {
   loopin.plugin('horten', 'loopin/')
 
+  H.root.patch( 'out', 'loopin/show')
   H.root.patch( 'image/earth.jpg', 'loopin/image/out/src' )
 
   return loopin.testDelay()
