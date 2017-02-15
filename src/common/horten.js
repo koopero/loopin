@@ -45,6 +45,9 @@ function loopinHorten( mutant ) {
   function onDispatch( event ) {
     switch( event.type ) {
       case 'frame':
+      case 'pixels':
+      case 'mousemove':
+
 
       break
 

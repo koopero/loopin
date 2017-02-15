@@ -118,3 +118,9 @@ function Loopin() {
 
   return loopin
 }
+
+Loopin.global = function () {
+  global.__firstLoopin = global.__firstLoopin || Loopin()
+
+  return global.__firstLoopin
+}
