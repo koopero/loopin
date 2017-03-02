@@ -5,6 +5,7 @@ presetDir.options = require('boptions')( {
   '#inline': 'dir',
   'dir': 'preset',
   'async': false,
+  'autoload': true
 })
 
 presetDir.extensions = ['json','yaml']
@@ -38,6 +39,7 @@ function presetDir() {
     extensions: presetDir.extensions,
     callback: opt.async ? loadPresetAsync : loadPresetSync,
     deep: true,
+    watch: true,
     scan: false
   })
 
@@ -60,6 +62,9 @@ function presetDir() {
     meta.description = yamlTop( source )
 
     loopin.presetAdd( key, data, meta )
+
+    if ( opt.autoload )
+      loopin.preset( key )
   }
 
   function loadPresetAsync( path ) {
@@ -68,6 +73,8 @@ function presetDir() {
     .then( yaml.load )
     .then( function ( data ) {
       loopin.presetAdd( key, data )
+      if ( opt.autoload )
+        loopin.preset( key )
     } )
   }
 }

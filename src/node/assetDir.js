@@ -19,6 +19,7 @@ const globlib = require('glob')
     , globSync = globlib.sync
     , pathlib = require('path')
     , chokidar = require('chokidar')
+    , os = require('os')
 
 function loopinAssetDir() {
   const loopin = this
@@ -42,7 +43,6 @@ function assetDir() {
 
   loopin.on('close', unwatch )
 
-  // console.log('assetDir', opt )
 
   if ( opt.scan )
     scan()
@@ -84,10 +84,17 @@ function assetDir() {
 
   function watch() {
     if ( !self.watcher ) {
-      // console.log('watching?', dir  )
+
+      let usePolling = false
+
+      // Questionable options tuned to work on OSX 10.8
+      if ( os.platform() == 'darwin' && os.release() <= '12.5.0' )
+        usePolling = true
 
       self.watcher = chokidar.watch( dir, {
-        persistent: false
+        persistent: false,
+        atomic: true,
+        usePolling
       } )
 
       self.watcher.on('add', onWatch )
@@ -96,9 +103,8 @@ function assetDir() {
   }
 
   function onWatch( path, stat ) {
-    // console.log('onWatch', path, stat )
-    // if ( !stat )
-    //   return
+    if ( !stat )
+      return
 
     if ( !stat.isFile() )
       return

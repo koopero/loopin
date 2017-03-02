@@ -8,7 +8,6 @@ function show() {
   loopin.show = show
 
   function show( key ) {
-    console.log('show', key )
     loopin.patch( key, 'show' )
   }
 

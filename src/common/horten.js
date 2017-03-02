@@ -31,6 +31,8 @@ function loopinHorten( mutant ) {
 
   loopin.hookAdd('close', () => { cursor.listening = false } )
 
+  cursor.pull()
+
   function onPatch( value, path ) {
     if ( !patching )
       cursor.patch( value, path )
