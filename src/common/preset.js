@@ -1,6 +1,7 @@
 module.exports = preset
 
 const _ = require('lodash')
+    , H = require('horten')
 
 function preset() {
   const loopin = this
@@ -24,7 +25,7 @@ function preset() {
     meta = meta || {}
     meta.name = key
     meta.title = meta.title || key
-    meta.data = require('../util/path').flattenObject( data )
+    meta.data = H.util.compose( data )
     presets[key] = meta
   }
 

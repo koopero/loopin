@@ -54,6 +54,9 @@ function presetDir() {
         source: source
       }
 
+    if ( !data )
+      return
+
     if ( _.isString( data.title ) ) {
       meta.title = data.title
     }

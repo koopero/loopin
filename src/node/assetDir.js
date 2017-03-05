@@ -93,6 +93,7 @@ function assetDir() {
 
       self.watcher = chokidar.watch( dir, {
         persistent: false,
+        ignored: /(^|[\/\\])\../,
         atomic: true,
         usePolling
       } )
