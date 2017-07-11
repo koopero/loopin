@@ -21,6 +21,7 @@ function presetDir() {
       , fs = Promise.promisifyAll( require('fs') )
 
 
+  loopin.plugin( 'log' )
   loopin.plugin( 'preset' )
   loopin.plugin( 'assetDir' )
   loopin.presetDir = presetDir.bind( loopin )
@@ -48,11 +49,25 @@ function presetDir() {
   function loadPresetSync( path, key, type ) {
     path = loopin.filesAbsolute( path )
 
-    var source = fs.readFileSync( path, 'utf8')
-      , data = yaml.load( source )
-      , meta = {
-        source: source
-      }
+    var source, data
+
+    try {
+      source = fs.readFileSync( path, 'utf8')
+      data = yaml.load( source )
+    } catch( err ) {
+      loopin.logError( {
+        type: 'fileLoadError',
+        path: '/presetDir',
+        data: {
+          src: path
+        }
+      } )
+    }
+
+
+    var meta = {
+      source: source
+    }
 
     if ( !data )
       return
@@ -74,10 +89,21 @@ function presetDir() {
     path = loopin.filesAbsolute( path )
     return fs.readFileAsync( path, 'utf8' )
     .then( yaml.load )
+    .catch( function ( err ) {
+      loopin.logError( {
+        type: 'fileLoadError',
+        path: '/presetDir',
+        data: {
+          src: path
+        }
+      } )
+    })
     .then( function ( data ) {
-      loopin.presetAdd( key, data )
-      if ( opt.autoload )
-        loopin.preset( key )
+      if ( data ) {
+        loopin.presetAdd( key, data )
+        if ( opt.autoload )
+          loopin.preset( key )
+      }
     } )
   }
 }

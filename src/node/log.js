@@ -31,13 +31,14 @@ function loopinLog() {
   loopin.logSection = logSection
   loopin.logShow = logShow
   loopin.logIgnore = logIgnore
+  loopin.logEvent = logEvent
+  loopin.logError = logError
 
-
-  loopin.dispatchListen( '*', listener )
+  loopin.dispatchListen( '*', logEvent )
 
   function log() {
     var e = event.fromArguments( arguments )
-    listener( e )
+    logEvent( e )
   }
 
   function logShow() {
@@ -64,7 +65,11 @@ function loopinLog() {
     write('\n')
   }
 
-  function listener( event ) {
+  function logError( event ) {
+    logEvent( event )
+  }
+
+  function logEvent( event ) {
     if ( _.find( opt.ignore, ( type ) => type == event.type ) )
       return true
 
