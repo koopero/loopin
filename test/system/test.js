@@ -39,7 +39,7 @@ function test ( func ) {
     loopin.plugin('files')
     loopin.filesRoot( test.resolveData() )
 
-    loopin.plugin('presetDir')
+    loopin.plugin('presetDir', { autoload: false } )
     loopin.plugin('preset')
     loopin.plugin('log')
     loopin.plugin('test')
