@@ -19,6 +19,7 @@ function loopinHorten( mutant ) {
   let cursor = new H.Cursor({
     mutant,
     onDelta,
+    echo: false,
     listening: true
   })
 
@@ -31,7 +32,11 @@ function loopinHorten( mutant ) {
 
   loopin.hookAdd('close', () => { cursor.listening = false } )
 
-  cursor.pull()
+  // cursor.pull()
+  // console.log( "LOOPIN HORTEN INIT", cursor.value )
+
+  cursor.value = cursor.value || {}
+  onDelta( cursor.value )
 
   function onPatch( value, path ) {
     if ( !patching )
@@ -40,6 +45,8 @@ function loopinHorten( mutant ) {
 
   function onDelta( delta ) {
     patching = true
+    // console.log('PATCHING', delta )
+
     loopin.patch( delta )
     patching = false
   }
