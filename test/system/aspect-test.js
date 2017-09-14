@@ -6,16 +6,18 @@ require('./test')( 'aspect-test', 'aspect-test', function ( loopin ) {
 
   // loopin.logShow('patch')
 
-  const width = randInt( 120, 1600 )
-      , height = randInt( 120, 720 )
-      , aspect = Math.pow( 10, Math.random() * 2 - 1 )
+  function setRandomWindowSize() {
+    const width = randInt( 120, 1600 )
+        , height = randInt( 120, 720 )
+        , aspect = Math.pow( 10, Math.random() * 2 - 1 )
 
-  loopin.patch( { width: width, height: height }, 'window/' )
-  loopin.patch( aspect, 'buffer/output/aspect' )
-  if ( aspect > 1 ) {
-    loopin.patch( { width: width / aspect, height: height }, 'buffer/output/' )
-  } else {
-    loopin.patch( { width: width, height: height * aspect }, 'buffer/output/' )
+    loopin.patch( { width: width, height: height }, 'window/' )
+    loopin.patch( aspect, 'buffer/output/aspect' )
+    if ( aspect > 1 ) {
+      loopin.patch( { width: width / aspect, height: height }, 'buffer/output/' )
+    } else {
+      loopin.patch( { width: width, height: height * aspect }, 'buffer/output/' )
+    }
   }
 
   return Promise.resolve( [
@@ -41,10 +43,9 @@ require('./test')( 'aspect-test', 'aspect-test', function ( loopin ) {
     .then( () => loopin.testPatchAndDisplay( 'contain', 'render/output/transform/mode' ) )
     .then( () => loopin.testDelay() )
     .then( () => loopin.patch( './transform/rotate', 'osd/text') )
-    .then( () => loopin.testAnimate('render/output/transform/rotate', rand( 360 ) ) )
-    .then( () => loopin.patch( 0, 'render/output/transform/rotate') )
+    .then( () => loopin.testAnimate('render/output/transform/rotate', rand( 360 ), 0 ) )
     .then( () => loopin.patch( 'camera/view/roll', 'osd/text') )
-    .then( () => loopin.testAnimate('camera/view/roll', rand( 360 ) ) )
+    .then( () => loopin.testAnimate('camera/view/yaw', rand( 360 ), 0 ) )
 
 
   } )
