@@ -5,7 +5,9 @@ presetDir.options = require('boptions')( {
   '#inline': 'dir',
   'dir': 'preset',
   'async': false,
-  'autoload': true
+  'scan': true,
+  'watch': true,
+  'autoload': false
 })
 
 presetDir.extensions = ['json','yaml']
@@ -40,11 +42,14 @@ function presetDir() {
     extensions: presetDir.extensions,
     callback: opt.async ? loadPresetAsync : loadPresetSync,
     deep: true,
-    watch: true,
+    watch: opt.watch,
     scan: false
   })
 
-  return opt.async ? assetDir.scan() : assetDir.scanSync()
+  if ( opt.scan )
+    return opt.async ? assetDir.scan() : assetDir.scanSync()
+
+  return
 
   function loadPresetSync( path, key, type ) {
     path = loopin.filesAbsolute( path )

@@ -10,6 +10,7 @@ function preset() {
 
   loopin.preset = preset
   loopin.preset._presets = presets
+
   loopin.presetAdd = presetAdd
   loopin.presetList = presetList
 
@@ -18,6 +19,8 @@ function preset() {
 
     if ( !_.isUndefined( preset ) ) {
       return loopin.patch( preset.data, path )
+    } else {
+      loopin.log('presetNotFound', { key } )
     }
   }
 
