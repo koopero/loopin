@@ -1,8 +1,0 @@
-text:
-  text: "Loopin Lives!"
-
-window:
-  width: 640
-  height: 80
-
-show: text
