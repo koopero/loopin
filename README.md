@@ -43,6 +43,10 @@ Loopin is a multi-tiered system, consisting of several loosely-coupled modules:
 
 ![Pride Obelisk 2017](gallery/obelisk.jpg)
 
+Example output from [loopin-starter](https://github.com/koopero/loopin-starter) project.
+
+![loopin-starter sample](gallery/starter.jpg)
+
 Simple, customizable, web-based controls available in every Loopin project.
 
 ![Controls example](gallery/controls.png)
