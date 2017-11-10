@@ -5,7 +5,6 @@
   'presetDir',
   'image',
   'save',
-  'stdio',
   'shader',
   'shaderDir',
   'log',
