@@ -1,6 +1,6 @@
 {
   "name": "loopin",
-  "version": "0.8.0-beta",
+  "version": "0.8.1",
   "description": "Loopin",
   "main": "node.js",
   "scripts": {
@@ -19,7 +19,7 @@
     "horten": "^0.8.3",
     "js-yaml": "^3.10.0",
     "lodash": "^4.17.4",
-    "treebird": "^0.2.2",
+    "treebird": "^0.2.3",
     "unique-file-name": "^0.1.5"
   },
   "devDependencies": {
