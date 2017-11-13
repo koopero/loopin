@@ -25,9 +25,12 @@ function loopinLog() {
         section: chalk.white
       }
 
+  var enabled = false
+
   loopin.plugin( 'dispatch' )
 
   loopin.log = log
+  loopin.logEnabled = logEnabled
   loopin.logSection = logSection
   loopin.logShow = logShow
   loopin.logIgnore = logIgnore
@@ -37,8 +40,16 @@ function loopinLog() {
   loopin.dispatchListen( '*', logEvent )
 
   function log() {
+    if ( !enabled )
+      return
+
     var e = event.fromArguments( arguments )
     logEvent( e )
+  }
+
+  function logEnabled( _enabled ) {
+    enabled = !!_enabled
+    return enabled
   }
 
   function logShow() {
@@ -77,7 +88,11 @@ function loopinLog() {
       , path = event.path
       , data = event.data
 
-    treebird( data, type, path )
+    treebird( data, {
+      type: type,
+      path: path,
+      stream: process.stderr
+    }, type, path )
 
     return true
   }
