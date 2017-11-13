@@ -15,9 +15,6 @@ function loopinPatch() {
     loopin.log( 'patch', H.path.resolve( path ), { data: value } )
 
     return loopin.hookAll( 'patch', value, path )
-
-    // Old stuff
-    loopin._patchStream.push( data )
   }
 
   loopin.patch.apply( loopin, arguments )
