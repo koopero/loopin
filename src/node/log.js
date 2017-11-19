@@ -2,7 +2,7 @@ module.exports = loopinLog
 loopinLog.options = require('boptions')({
   'ignore': {
     type: 'array',
-    value: ['frame','patch','mousemove','pixels']
+    value: ['frame','patch','mousemove','pixels','read']
   }
 })
 
@@ -16,14 +16,6 @@ function loopinLog() {
   const loopin = this
       , opt = loopinLog.options( arguments )
       , write = process.stdout.write.bind( process.stdout )
-      , styles = {
-        type: chalk.cyan,
-        path: chalk.magenta,
-        delim: chalk.dim,
-        key: chalk.blue,
-        value: chalk.red,
-        section: chalk.white
-      }
 
   var enabled = false
 
@@ -34,14 +26,15 @@ function loopinLog() {
   loopin.logSection = logSection
   loopin.logShow = logShow
   loopin.logIgnore = logIgnore
+  loopin.logIsUsed = logIsUsed
   loopin.logEvent = logEvent
   loopin.logError = logError
 
   loopin.dispatchListen( '*', logEvent )
 
   function log() {
-    if ( !enabled )
-      return
+    // if ( !enabled )
+    //   return
 
     var e = event.fromArguments( arguments )
     logEvent( e )
@@ -66,6 +59,10 @@ function loopinLog() {
       if ( ind == -1 )
         opt.ignore.push( key )
     } )
+  }
+
+  function logIsUsed() {
+    return !!(_.find( opt.ignore, ( type ) => type == event.type ) )
   }
 
   function logSection ( name ) {

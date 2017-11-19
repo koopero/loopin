@@ -31,7 +31,7 @@ Event.fromArguments = require('boptions')({
   'path': '',
   'type': '<unknown>',
   'data': {
-    'type': 'extendValue'
+    'type': 'extend'
   },
   'time': NaN
 })
