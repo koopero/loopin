@@ -10,7 +10,11 @@ image.extensions = ['png','jpg']
 
 image.options = require('boptions')({
   '#inline': ['src'],
+  'buffer': '',
+  'replace': false,
   'src': '#string',
+  'crop': '#extend',
+  'box': '#extend'
 })
 
 
@@ -28,7 +32,7 @@ function image() {
   const opt = image.options( arguments )
   loopin.log('image', self.path, opt )
   if ( opt.src ) {
-    self.patch( { src: opt.src } )
+    self.patch( opt )
   }
 
   return loopin.dispatchListen( self.path )
