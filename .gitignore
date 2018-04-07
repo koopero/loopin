@@ -1,6 +1,5 @@
 .DS_Store
 .AppleDouble
 npm-debug.log
+yarn-error.log
 node_modules/
-test/system/data/tmp/
-test/system/data/result/

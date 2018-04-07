@@ -5,7 +5,7 @@ const Loopin = require('../node')
 
 describe('patch', function () {
   describe('patchGet', function () {
-    it('does not smoke', function () {
+    xit('does not smoke', function () {
       const loopin = Loopin()
       loopin.patch('bar', 'foo' )
       const result = loopin.patchGet()
