@@ -6,6 +6,7 @@ function loopinHorten( mutant ) {
   const loopin = this
   loopin.H = H
 
+  var useEvents = [ 'read', 'done' ]
 
 
   if ( Array.isArray( mutant ) || 'string' == typeof mutant ) {
@@ -52,17 +53,9 @@ function loopinHorten( mutant ) {
   }
 
   function onDispatch( event ) {
-    switch( event.type ) {
-      case 'frame':
-      case 'pixels':
-      case 'mousemove':
-
-
-      break
-
-      default:
-        cursor.patch( event.data, event.path )
-    }
+    let { type } = event
+    if ( useEvents.indexOf( type ) != -1 )
+      cursor.patch( event.data, event.path )
 
     return true
   }

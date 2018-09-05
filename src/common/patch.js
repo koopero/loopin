@@ -22,14 +22,12 @@ function loopinPatch() {
     const path = H.path.slice( arguments, 1 )
     var mutant = new H.Mutant()
 
-    mutant.set( value, path )
+    mutant.patch( value, path )
     await loopin.hookAll('patchMutate', mutant )
     value = mutant.get( path )
 
     data.patch( value, path )
     loopin.log( 'patch', H.path.resolve( path ), mutant.get( path ) )
-
-
 
 
     return loopin.hookAll( 'patch', mutant.get() )

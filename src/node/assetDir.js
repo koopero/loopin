@@ -85,11 +85,7 @@ function assetDir() {
   function watch() {
     if ( !self.watcher ) {
 
-      let usePolling = false
-
-      // Questionable options tuned to work on OSX 10.8
-      if ( os.platform() == 'darwin' && os.release() <= '12.5.0' )
-        usePolling = true
+      let usePolling = true
 
       self.watcher = chokidar.watch( dir, {
         persistent: false,
