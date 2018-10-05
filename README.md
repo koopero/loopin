@@ -29,7 +29,7 @@ Loopin is a multi-tiered system, consisting of several loosely-coupled modules:
 
 [loopin-native](https://github.com/koopero/loopin-native) implements a low-level, natively compiled rendering machine named `ofxLoopin`.
 
-[loopin-shader](https://github.com/koopero/loopin-shader) is a the shader loading system.
+[loopin-shaders](https://github.com/koopero/loopin-shaders) is a the shader loading system.
 
 [loopin-server](https://github.com/koopero/loopin-server) delivers a RESTful interface to Loopin internals and hosts controls.
 
