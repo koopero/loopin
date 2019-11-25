@@ -11,11 +11,11 @@ function loopinPatch() {
   loopin.patchYAML = patchYAML
   loopin.patchGet = data.get.bind( data )
 
-  function patchYAML( string ) {
+  async function patchYAML( string ) {
     const path = H.path.slice( arguments, 1 )
     var data = yaml.load( string )
     data = H.util.compose( data )
-    patch( data, patch )
+    await patch( data, patch )
   }
 
   async function patch( value ) {
@@ -27,10 +27,10 @@ function loopinPatch() {
     value = mutant.get( path )
 
     data.patch( value, path )
-    loopin.log( 'patch', H.path.resolve( path ), mutant.get( path ) )
-
-
-    return loopin.hookAll( 'patch', mutant.get() )
+    loopin.log( 'patch', H.path.resolve( path ), value )
+    let result = await loopin.hookAll( 'patch', mutant.get() )
+    loopin.emit('patch', { value, path } )
+    return result
   }
 
   loopin.patch.apply( loopin, arguments )

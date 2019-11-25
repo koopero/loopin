@@ -2,24 +2,29 @@ module.exports = loopinHorten
 
 const H = require('horten')
 
-function loopinHorten( mutant ) {
+function loopinHorten( opt ) {
+
+  let { 
+    path = 'loopin/',
+    root = null,
+    listen = 'read,done,move',
+  } = opt || {}
   const loopin = this
+
+  var useEvents = []
+
+  root = root || H.root
+  persistDispatch( listen )
+  let mutant = root.walk( path )
+
+
   loopin.H = H
 
-  var useEvents = [ 'read', 'done' ]
-
-
-  if ( Array.isArray( mutant ) || 'string' == typeof mutant ) {
-    mutant = H.root.walk( mutant )
-  } else if ( mutant == null ) {
-    mutant = H.root
-  } else if ( !H.Mutant.isMutant( mutant ) ) {
-    throw new Error('initializer must be Mutant')
-  }
 
   let cursor = new H.Cursor({
     mutant,
     onDelta,
+    root,
     echo: false,
     listening: true
   })
@@ -28,13 +33,9 @@ function loopinHorten( mutant ) {
 
   loopin.plugin('patch')
   loopin.plugin('dispatch')
-
   loopin.dispatchListen('*', onDispatch )
-
   loopin.hookAdd('close', () => { cursor.listening = false } )
-
-  // cursor.pull()
-  // console.log( "LOOPIN HORTEN INIT", cursor.value )
+  loopin.persistDispatch = persistDispatch
 
   cursor.value = cursor.value || {}
   onDelta( cursor.value )
@@ -58,5 +59,12 @@ function loopinHorten( mutant ) {
       cursor.patch( event.data, event.path )
 
     return true
+  }
+
+  function persistDispatch( events ) {
+    if ( 'string' == typeof events )
+      events = events.split(/[\,\s]/g)
+
+    events.map( type => useEvents.push( type ) )
   }
 }

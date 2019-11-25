@@ -2,7 +2,9 @@ module.exports = watchFilePlugin
 
 watchFilePlugin.options = require('boptions')({
   '#inline': ['file'],
-  file: '#string'
+  file: '#string',
+  name: '',
+  buffer: '',
 })
 
 const _ = require('lodash')
@@ -27,12 +29,14 @@ function watchFilePlugin () {
       let { file, scan=true, watch=true } = opt 
       this.file = loopin.filesResolve( file )
       this.opt = opt
-      if ( scan ) this.scan()
+      // console.log( { opt } )
+      // process.exit()
+      // if ( scan ) this.scan()
       if ( watch ) this.watch()
     }
 
     async load() {
-      const { file } = this
+      const { file, opt } = this
       let dir = pathlib.dirname( file )
       let ext = pathlib.extname( file )
       let base = pathlib.basename( file, ext )
@@ -40,27 +44,33 @@ function watchFilePlugin () {
       let name = opt.name || base
       let patch = null
       let text = ''
-      let data = null
       let error = null
+      let buffer = opt.buffer || name
 
 
       switch( type ) {
         case 'preset':
           await loadText()
-          try {
-            data = YAML.safeLoad( text )
-          } catch( err ) {
-            error = err 
-          }
+          patch = text
+        break
+
+        case 'image':
+          patch = `
+            image/${name}:
+              src: "${file}"
+              buffer: "${buffer}"
+          `
         break
       }
 
-
-      let result = { file, name, type, text, data, patch, error }
-
+      let result = { file, name, type, text, patch, error, buffer }
       this.emit( 'load', result )
-      return result
+      loopin.log( 'watchFile', file, { data: { name, type, buffer } } )
 
+      if ( patch )
+        await loopin.patchYAML( patch )
+
+      return result
 
       async function loadText() {
         text = await fs.readFile( file, 'utf8' )
@@ -92,7 +102,7 @@ function watchFilePlugin () {
         atomic: true,
         usePolling
       } )
-      let onWatch = _.debounce( () => this.scan(), 100 )
+      let onWatch = _.debounce( () => this.scan(), 200 )
       this.watcher.on( 'add', onWatch )
       this.watcher.on( 'change', onWatch )
     }
