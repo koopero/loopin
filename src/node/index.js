@@ -10,5 +10,6 @@
   'log',
   'assetDir',
   'imageDir',
-  'bufferFile'
+  'bufferFile',
+  'watchFile',
 ].map( ( k ) => exports[k] = require('./'+k) )

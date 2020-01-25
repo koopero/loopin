@@ -35,14 +35,12 @@ function assetDir() {
       , opt = assetDir.options( arguments )
       , dir = loopin.filesAbsolute( opt.dir )
 
-
   self.scan = scan
   self.scanSync = scanSync
   self.watch = watch
   self.unwatch = unwatch
 
   loopin.on('close', unwatch )
-
 
   if ( opt.scan )
     scan()
