@@ -27,7 +27,7 @@ function loopinPatch() {
     value = mutant.get( path )
 
     data.patch( value, path )
-    loopin.log( 'patch', H.path.resolve( path ), value )
+    loopin.log( 'patch', H.path.resolve( path ), { data: value } )
     let result = await loopin.hookAll( 'patch', mutant.get() )
     loopin.emit('patch', { value, path } )
     return result
