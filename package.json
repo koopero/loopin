@@ -4,7 +4,9 @@
   "description": "Loopin",
   "main": "node.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "author": "Samm Cooper <koopero@gmail.com>",
   "license": "MIT",
@@ -20,7 +22,8 @@
     "js-yaml": "^3.13.1",
     "lodash": "^4.17.15",
     "treebird": "^0.2.3",
-    "unique-file-name": "^1.0.1"
+    "unique-file-name": "^1.0.1",
+    "snyk": "^1.316.1"
   },
   "devDependencies": {
     "chai": "^4.2.0",
@@ -38,5 +41,6 @@
   "bugs": {
     "url": "https://github.com/koopero/loopin/issues"
   },
-  "homepage": "https://github.com/koopero/loopin#readme"
+  "homepage": "https://github.com/koopero/loopin#readme",
+  "snyk": true
 }
